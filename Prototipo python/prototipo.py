@@ -15,7 +15,7 @@ reviews.head(10)
 
 
 textcat = nlp.add_pipe('textcat')
-nlp.pipe_names
+print(nlp.pipe_names)
 
 textcat.add_label("POSITIVO")
 textcat.add_label("NEGATIVO")
