@@ -77,4 +77,25 @@ Vida adulta (hasta la actualidad):
 - Comida favorita, le gusta cocinar, alguien de la familia que recuerde que cocine/cocinase muy bien, que cocinaba
 - Algo que recuerde muy especial de la época, algo de lo que esté muy orgulloso/a
 - Tiene nietos/as, cómo se llaman, de quién son hijos/as, que destaca de ellos, cuántos años tienen, que le gustaría que fuesen ellos en un futuro
+
+
+
+{
+  "_id": 1,
+  "pregunta": "¿Cómo te llamas?",
+  "clasificación": "general"
+}
+
+{
+  "_id": 2,
+  "pregunta": "¿Cómo te llamas?",
+  "clasificación": ["general","infancia"]
+}
+
+{
+  "_id": 3,
+  "pregunta": "¿Dónde naciste?",
+  "pegunta2": "¿Cómo era este lugar cuando eras pequeño?",
+  "clasificación": "infancia"
+}
   

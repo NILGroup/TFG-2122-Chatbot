@@ -40,7 +40,8 @@ with nlp.disable_pipes(*other_pipes): # only train textcat
     optimizer = nlp.begin_training()
 
     print("Training the model...")
-    print('{:^5}\t{:^5}\t{:^5}\t{:^5}'.format('LOSS', 'P', 'R', 'F'))
+    #print('{:^5}\t{:^5}\t{:^5}\t{:^5}'.format('LOSS', 'P', 'R', 'F'))
+    print('{:^5}\t'.format('LOSS'))
 
     # Performing training
     for i in range(8):
@@ -61,9 +62,10 @@ with nlp.disable_pipes(*other_pipes): # only train textcat
 
         with nlp.use_params(optimizer.averages):
             scores = funciones.evaluate(nlp.tokenizer, textcat, dev_texts, dev_cats)
-        print('{0:.3f}\t{1:.3f}\t{2:.3f}\t{3:.3f}'
+        '''print('{0:.3f}\t{1:.3f}\t{2:.3f}\t{3:.3f}'
         .format(losses['textcat'], scores['textcat_p'],
-        scores['textcat_r'], scores['textcat_f']))
+        scores['textcat_r'], scores['textcat_f']))'''
+        print('{0:.3f}\t'.format(losses['textcat']))
 
 test_text="Mi abuela se murio en 1998"
 test_text2="De pequeña pasaba mucho tiempo con mis abuelos, íbamos al parque y me me encantaba jugar con mi hermano a ser piratas"
