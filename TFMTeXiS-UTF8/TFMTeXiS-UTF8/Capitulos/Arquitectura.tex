@@ -10,3 +10,11 @@ El prototipo funciona siguiendo una serie de pasos. En primer lugar, se añade e
 Ya tenemos casi todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizarán y evaluarán un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible sin pasarnos de vueltas para que sea óptimo. Se trata de un proceso iterativo en el que las predicciones del modelo se comparan con las etiquetas de referencia para estimar el gradiente de la pérdida. El modelo se entrena utilizando una función que lo analiza y actualiza en cada iteración, la función update(). También se comprueban las predicciones del modelo en cada vuelta, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida.
 
 Una vez afinado el modelo mediante el entreno previo, ya podemos ponerlo a prueba. El prototipo sacará la probabilidad de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo. 
+
+\section{Preguntas basadas en la respuesta}
+Esta sección consiste en conseguir que las preguntas que se hagan al interrogado tengan sentido con el resto de la conversación previa. Conseguir que sean lo más inteligentes y adecuadas posible.
+
+Para ello vamos a utilizar el analizador de texto Spacy utilizando el código del TFG de Laura Castilla Castellano (Generación de historias a partir de una base de conocimiento), en concreto el código que aparece en analysis.py que contiene funciones para el procesamiento y síntesis de los textos.
+
+Para encontrar la pregunta más adecuada primero se han eliminado las preguntas que ya habían sido contestadas para no repetirlas. Después con las funciones del TFG de Laura, de sintetizar y categorizar, se han desmembrado tanto las posibles preguntas como la respuesta anterior que el interrogado ha dado. Una vez desmembradas en lemmas, se han comparado los lemmas de ambas frases, tanto respuesta como posible pregunta. Dentro de la lista de posibles preguntas, la que más lemmas comunes tenga con la respuesta, gana como siguiente pregunta a formular. 
+ 
