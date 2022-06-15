@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 import json
+import analyze_answer
 
 def connection():
     client = MongoClient(port=27017)
@@ -53,7 +54,9 @@ def every_unasked_question():
 def insert_answer(question, answer):
     db = connection()
 
-    doc = {"pregunta": question, "respuesta": answer}
+    categories = analyze_answer.clasificar_emocion(answer)
+
+    doc = {"pregunta": question, "respuesta": answer, "categorias": categories}
     db.respuestas.insert_one(doc)
     #db.preguntas.update_one({"pregunta": question}, {"$set":{"asked": "True"}})
 

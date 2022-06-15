@@ -160,7 +160,7 @@ def choose_question(answer):
         return None
 
 
-docs = read(texto)
+'''docs = read(texto)
 print("DOOOOOOOCSSSSSSSSSSSSSSSS")
 print(docs)
 only_words = synthesis(docs)
@@ -184,4 +184,4 @@ print("COMMMOOOONS TEXTSSSSSSSSSSSS")
 print(most_common_in_texts)
 relations = get_relations(most_common_in_texts, only_words)
 print("RELAAAAAAAAAATIOOOOONS")
-print(relations)
+print(relations)'''
