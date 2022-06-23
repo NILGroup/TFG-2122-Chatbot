@@ -1,22 +1,47 @@
 \chapter{Arquitectura}
 \label{cap:arquitectura}
 
-\section{Prototipo de análisis de texto}
+\section{Prototipo primero de análisis de sentimientos de un texto}
 
 Se ha probado una forma de clasificar texto utilizando TextCategorizer \citep{categorizar} de la librería spacy de python. Se trata de entrenar un modelo para saber identificar si un recuerdo es positivo o negativo. Se ha utilizado el código del artículo \cite{prototipo} para probar cómo se podría entrenar el modelo para que supiese diferenciar los recuerdos negativos de los positivos y así tener la primera clasificación que pidieron los terapeutas especializados del proyecto CANTOR. Se ha probado usando una batería de recuerdos positivos encontrados entre los archivos del TFG de Laura Castillo \citep{reminiscencia} y negativos inventados. Antes de probar con recuerdos se probó con un dataset mucho más grande de reseñas de moda que se ponía como ejemplo en \cite{prototipo}. 
 
-El prototipo funciona siguiendo una serie de pasos. En primer lugar, se añade el componente TextCategorizer (textcat) a un modelo en blanco del idioma español. Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido (como serían NER,), es decir, el texto que se almacena en los documentos de spaCy no es analizado por ninguna cadena de procesos porque la tubería de componentes está vacía. Si hubiésemos cogido un modelo pre-entrenado como "\ es\_core\_news\_sm", el clasificador de textos se sumaría al trabajo previo de los procesos que analizan el texto como serían ['tok2vec', 'morphologizer', 'parser', 'attribute\_ruler', 'lemmatizer', 'ner']. Por ejemplo, el componente ner, más reconocido como Named Entity Recognizer, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Al usar el modelo en blanco empezamos con el español de cero, sin analizar. Tras añadir el componente textcat, al crear un documento de spaCy, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurándolo, el prototipo coge el texto que usaremos para entrenar nuestro modelo y lo prepara adecuándolo al formato que entiende el clasificador, siendo éste una lista de tuplas (texto, etiqueta). Además, cogerá un porcentaje de esta batería de recuerdos (\% que previamente hemos definido) y lo reservará para la evaluación de las predicciones, es decir, para analizar cómo de bien predice nuestro modelo tras entrenarlo. 
+El prototipo funciona siguiendo una serie de pasos. En primer lugar, se añade el componente TextCategorizer (textcat) a un modelo en blanco del idioma español. Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido (como serían NER que explicaré más adelante), es decir, el texto que se almacena en los documentos de spaCy no es analizado por ninguna cadena de procesos porque la tubería de componentes está vacía. Si hubiésemos cogido un modelo pre-entrenado como "\ es\_core\_news\_sm", el clasificador de textos se sumaría al trabajo previo de los procesos que analizan el texto como serían ['tok2vec', 'morphologizer', 'parser', 'attribute\_ruler', 'lemmatizer', 'ner']. Por ejemplo, el componente ner, más reconocido como Named Entity Recognizer, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Al usar el modelo en blanco empezamos con el español de cero, sin analizar. Tras añadir el componente textcat, al crear un documento de spaCy, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurándolo, el prototipo coge el texto que usaremos para entrenar nuestro modelo y lo prepara adecuándolo al formato que entiende el clasificador, siendo éste una lista de tuplas (texto, etiqueta). Además, cogerá un porcentaje de esta batería de recuerdos (\% que previamente hemos definido) y lo reservará para la evaluación de las predicciones, es decir, para analizar cómo de bien predice nuestro modelo tras entrenarlo. 
 
 Ya tenemos casi todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizarán y evaluarán un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible sin pasarnos de vueltas para que sea óptimo. Se trata de un proceso iterativo en el que las predicciones del modelo se comparan con las etiquetas de referencia para estimar el gradiente de la pérdida. El modelo se entrena utilizando una función que lo analiza y actualiza en cada iteración, la función update(). También se comprueban las predicciones del modelo en cada vuelta, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida.
 
 Una vez afinado el modelo mediante el entreno previo, ya podemos ponerlo a prueba. El prototipo sacará la probabilidad de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo. 
 
-\section{Preguntas basadas en la respuesta}
-Esta sección consiste en conseguir que las preguntas que se hagan al interrogado tengan sentido con el resto de la conversación previa. Conseguir que sean lo más inteligentes y adecuadas posible.
+\section{Módulo primero de encadenamiento entre preguntas y respuestas}
+Esta sección consiste en conseguir que las preguntas que se hagan al interrogado tengan sentido con el resto de la conversación previa. Conseguir que sean lo más inteligentes y adecuadas posible. 
 
-Para ello vamos a utilizar el analizador de texto Spacy utilizando el código del TFG de Laura Castilla Castellano (Generación de historias a partir de una base de conocimiento), en concreto el código que aparece en analysis.py que contiene funciones para el procesamiento y síntesis de los textos.
+Lo primero que se ha hecho para encontrar la siguiente pregunta a hacer es coger la lista de todas las posibles preguntas y eliminar aquellas que ya han sido contestadas anteriormente para no repetirlas. 
 
-Para encontrar la pregunta más adecuada primero se han eliminado las preguntas que ya habían sido contestadas para no repetirlas. Después con las funciones del TFG de Laura, de sintetizar y categorizar, se han desmembrado tanto las posibles preguntas como la respuesta anterior que el interrogado ha dado. Una vez desmembradas en lemas, se han comparado los lemas de ambas frases, tanto respuesta como posible pregunta. Dentro de la lista de posibles preguntas, la que más lemas comunes tenga con la respuesta, gana como siguiente pregunta a formular. 
+Lo siguiente que se hará es pasar tanto la respuesta más reciente que ha dado el interrogado como todas las posibles preguntas por un proceso de síntesis. Para ello vamos a utilizar el analizador de texto Spacy utilizando el código del TFG de Laura Castilla Castellano (Generación de historias a partir de una base de conocimiento), en concreto el código que aparece en el archivo "analysis.py" de su código, que contiene funciones para el procesamiento y síntesis de los textos. Los pasos que Laura sigue para el análisis del texto aparecen en el apartado 5.1 (Analizar textos para obtener sugerencias) de su memoria, páginas 30 y 31. Las funciones que se han reutilizado en este trabajo, con algunas modificaciones, son las siguientes:
+\begin{itemize}
+	\item Read: Coge el texto a analizar y elimina signos de puntuación
+	\item Synthesis: Elimina las palabras vacías como las preposiciones del texto
+	\item Lemmatize: Transforma cada palabra del texto sus lemas correspondientes
+	\item Categorize: Separa las palabras en sustantivos, verbos y adjetivos. Además, coge los 30 más comunes de cada tipo
+	\item Get\_most\_common\_words: Coge las palabras más comunes de todos los tipos del texto
+\end{itemize}
 
-Para categorizar la respuestas usaremos el prototipo del apartado anterior. Se ha añadido un archivo "analyze_answer" que entrena primero al modelo en textos positivos y negativos y luego tiene una funcion que evalua el texto que le llega e identifica si es negativo o positivo. Esto se añade como una categoría que se meterá en la base de datos junto a la respuesta.
- 
+Estas funciones se han utilizado para conseguir una representación del texto más precisa y reducida. Solo los lemas de las palabras importantes del texto serán usados para este módulo de encadenamiento de preguntas y respuestas.
+
+Por último, dada la respuesta y todas las posibles preguntas ya reducidas a sus lemas, para encontrar la pregunta más adecuada, se compara una a una los lemas de las posibles preguntas con los lemas de la respuesta. Dentro de la lista de posibles preguntas, la que más lemas comunes tenga con la respuesta, gana como siguiente pregunta a formular.
+
+\section{Módulo primero de clasificación de respuestas en etapas de vida y en sentimientos}
+
+Para categorizar las respuestas según el sentimiento usaremos directamente el prototipo del apartado de análisis de sentimientos de un texto. Se ha añadido un archivo "analyze\_answer" que entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega e identifica si es negativo o positivo. Esto se añade como una categoría que se meterá en la base de datos junto a la respuesta. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias. 
+
+Otra categoría que se añadirá junto a la respuesta será la de la etapa de la vida a la que corresponde. Primero tenemos que definir esas etapas y para ello me he basado en la clasificación que hace el Ministerio de Salud de Colombia ( https://www.minsalud.gov.co/proteccionsocial/Paginas/cicloVida.aspx). Le he hecho algunas modificaciones para adecuarme más a lo que quería sacar en claro de la información que se me presentaba. Las etapas serían las siguientes:
+\begin{itemize}
+	\item Infancia de 0 a 11 años
+	\item Adolescencia de 12 a 17 años
+	\item Juventud de 18 a 26 años
+	\item Etapa adulta de 27 a 59 años
+	\item Vejez de 60 años o más
+	\item Indeterminado para aquellos textos en los que no se pueda distinguir la etapa
+\end{itemize}
+
+Una vez elegidos los periodos de tiempo en los que se divide la vida de las personas, el objetivo es clasificar recuerdos, dados en forma de respuesta a una pregunta, según la etapa de la vida a la que pertenecía el recuerdo de la persona interrogada. Para ello, también se ha utilizado la misma tecnología que el prototipo primero de análisis de sentimientos. Además de entrenarse en recuerdos positivos y negativos, ahora el modelo se entrena para distinguir etapas vitales en las que ocurren los recuerdos para así, de cara a la elaboración de un libro de vida, que toda la información esté bien estructurada en periodos de tiempo. 
+
