@@ -1,6 +1,8 @@
 from pymongo import MongoClient
 import json
 import analyze_answer
+import classify_answer
+import text_analysis
 
 def connection():
     client = MongoClient(port=27017)
@@ -55,8 +57,11 @@ def insert_answer(question, answer):
     db = connection()
 
     categories = analyze_answer.clasificar_emocion(answer)
+    categories += classify_answer.clasificar_etapas(answer)
+    categories += text_analysis.analyze(answer)
 
     doc = {"pregunta": question, "respuesta": answer, "categorias": categories}
     db.respuestas.insert_one(doc)
     #db.preguntas.update_one({"pregunta": question}, {"$set":{"asked": "True"}})
 
+insert_answer("hola", "Me llamo Lucía y tengo 23 años")

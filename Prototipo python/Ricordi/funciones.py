@@ -12,6 +12,18 @@ def load_data(train, limit=0, split=0.8):
     split = int(len(train_data) * split)
     return (texts[:split], cats[:split]), (texts[split:], cats[split:])
 
+def load_data_phases(train, limit=0, split=0.8):
+    train_data=train
+    # Shuffle the data
+    random.shuffle(train_data)
+    texts, labels = zip(*train_data)
+    # get the categories for each review
+    cats = [{"INFANCIA": (False, True)[y == 0], "ADOLESCENCIA": (False, True)[y == 1], "JUVENTUD": (False, True)[y == 2], "ETAPA ADULTA": (False, True)[y == 3], "VEJEZ": (False, True)[y == 4], "INDETERMINADO": (False, True)[y == 5]} for y in labels]
+
+    # Splitting the training and evaluation data
+    split = int(len(train_data) * split)
+    return (texts[:split], cats[:split]), (texts[split:], cats[split:])
+
 def evaluate(tokenizer, textcat, texts, cats):
     docs = (tokenizer(text) for text in texts)
     tp = 0.0 # True positives

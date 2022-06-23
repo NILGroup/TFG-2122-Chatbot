@@ -70,7 +70,7 @@ def clasificar_emocion(text):
     
     doc = nlp(text)
     print('{}: {}'.format(text, doc.cats))
-    
+
     if doc.cats['NEGATIVO'] > doc.cats['POSITIVO']:
         categories.append('negativo')
     else:

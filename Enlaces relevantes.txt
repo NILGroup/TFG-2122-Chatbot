@@ -1,0 +1,37 @@
+TFG Emotional sentiment -> analisis del sentimiento de textos:
+https://eprints.ucm.es/id/eprint/62115/
+http://sesat.fdi.ucm.es/traductor/
+
+
+TFG (Cristina Alameda) Generación de historias de vida usandotécnicas de Deep Learning -> mi tfg recoge la info que luego usará este tfg en forma de tripletas:
+"D:\OneDrive - Universidad Complutense de Madrid (UCM)\Uni\2021-2022\TFG\TFG_CristinaAlameda.pdf"
+https://github.com/NILGroup/TFG-2122-GeneracionHistoriasDeVida
+http://caliope.fdi.ucm.es/
+
+
+Extracción de información con spacy:
+https://www.analyticsvidhya.com/blog/2019/09/introduction-information-extraction-python-spacy/
+https://spacy.io/
+https://www.nltk.org/
+https://www.analyticsvidhya.com/blog/2019/09/introduction-information-extraction-python-spacy/
+https://towardsdatascience.com/extract-knowledge-from-text-end-to-end-information-extraction-pipeline-with-spacy-and-neo4j-502b2b1e0754
+https://towardsdatascience.com/using-potato-for-interpretable-information-extraction-f2081a717eb7
+https://www.nltk.org/book/ch07.html
+
+
+
+Conversaciones y posibles preguntas:
+http://repositori.uji.es/xmlui/handle/10234/161876
+http://repositori.uji.es/xmlui/bitstream/handle/10234/161876/TFG_Lopez_Cano%2c_Lorena.pdf?sequence=1&isAllowed=y
+http://repositori.uji.es/xmlui/handle/10234/183175
+TFG Laura Castilla
+https://www.redalyc.org/articulo.oa?id=70512127012
+
+
+TFG (Laura Castilla) -> ejemplos de historias de vida + analisis de los lemas en un texto:
+https://github.com/NILGroup/TFG-2021-GeneracionHistorias
+https://drive.google.com/drive/u/1/folders/1qRrEbWqWGSmFE4_2iO7ioCoaMz1ZSL2h
+
+
+Estado de la cuestion:
+https://www.psicologiacientifica.com/reminiscencia-historia-de-vida-anciano/

@@ -1,3 +1,4 @@
+import sys
 import time
 from pip import main
 import pyttsx3
@@ -67,7 +68,7 @@ while question:
     question = next_question.choose_question(answer)
 
 print("No hay más preguntas")
-exit()
+sys.exit()
         
 
 
