@@ -25,10 +25,10 @@ def signup():
 
 
 @app.route('/chatbot/<int:user_id>/')
-def chat():
+def chat(user_id):
     global question
     question = mongobd.one_random_question()
-    return render_template("chatbot.html", user_id=3, q=question)
+    return render_template("chatbot.html", user_id=user_id, q=question)
 
 
 def chatbot_response(answer):
@@ -54,7 +54,7 @@ def get_bot_response():
 # https://flask.palletsprojects.com/en/2.1.x/quickstart/
 # https://j2logo.com/leccion-1-la-primera-aplicacion-flask/
 
-# cerar este fichero y luego en consola hacer: set FLASK_APP=run.py
+# cerar este fichero y luego en consola hacer (tras cd Ricordi): set FLASK_APP=run.py (CMD)        $env:FLASK_APP = "run" (Powershell)
 # python -m flask run ----------- para ejecutar y servidor en localhost
 
 

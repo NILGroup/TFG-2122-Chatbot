@@ -18,7 +18,6 @@
               </div>
               <div class="msg-text">
                 Hola, bienvenid@ a Ricorda, el chatbot que almacena tus recuerdos. Empecemos con las preguntas.
-                {{ q }} 
               </div>
             </div>
           </div>
@@ -48,19 +47,11 @@
         const msgerForm = get(".msger-inputarea");
         const msgerInput = get(".msger-input");
         const msgerChat = get(".msger-chat");
-        const msgerBot = get(".msg-text");
         // Icons made by Freepik from www.flaticon.com
         const BOT_IMG = "https://image.flaticon.com/icons/svg/327/327779.svg";
         const PERSON_IMG = "https://image.flaticon.com/icons/svg/145/145867.svg";
         const BOT_NAME = "    ChatBot";
         const PERSON_NAME = "You";
-        /*msgerBot.addEventListener("load", event => {
-            $.get("/getRQ").done(function (data) {
-                console.log(data);
-                const msgText = data;
-                appendMessage(BOT_NAME, BOT_IMG, "left", msgText);
-              });
-        });*/
         msgerForm.addEventListener("submit", event => {
           event.preventDefault();
           const msgText = msgerInput.value;
