@@ -6,7 +6,7 @@ def load_data(train, limit=0, split=0.8):
     random.shuffle(train_data)
     texts, labels = zip(*train_data)
     # get the categories for each review
-    cats = [{"POSITIVO": bool(y), "NEGATIVO": not bool(y)} for y in labels]
+    cats = [{"POSITIVO": (False, True)[y == 1], "NEGATIVO": (False, True)[y == 0], "NEUTRO": (False, True)[y == 2]} for y in labels]
 
     # Splitting the training and evaluation data
     split = int(len(train_data) * split)

@@ -14,7 +14,6 @@ memories = memories[['Recuerdo','Etapa']].dropna()
 
 
 textcat = nlp.add_pipe('textcat')
-print(nlp.pipe_names)
 
 textcat.add_label("INFANCIA")
 textcat.add_label("ADOLESCENCIA")

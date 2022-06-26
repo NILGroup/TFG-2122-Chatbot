@@ -8,20 +8,20 @@ import funciones
 
 nlp = spacy.blank('es')
 
-reviews=pd.read_csv("recuerdos.csv")
+memories=pd.read_csv("recuerdos.csv")
 
-reviews = reviews[['Recuerdo','IND']].dropna() 
-reviews.head(10)
+memories = memories[['Recuerdo','IND']].dropna() 
+#memories.head(10)
 
 
 textcat = nlp.add_pipe('textcat')
-print(nlp.pipe_names)
 
 textcat.add_label("POSITIVO")
 textcat.add_label("NEGATIVO")
+textcat.add_label("NEUTRO")
 
-reviews['tuples'] = reviews.apply(lambda row: (row['Recuerdo'],row['IND']), axis=1)
-train =reviews['tuples'].tolist()
+memories['tuples'] = memories.apply(lambda row: (row['Recuerdo'],row['IND']), axis=1)
+train =memories['tuples'].tolist()
 print(train[:10])
 
 
@@ -71,10 +71,12 @@ def clasificar_emocion(text):
     doc = nlp(text)
     print('{}: {}'.format(text, doc.cats))
 
-    if doc.cats['NEGATIVO'] > doc.cats['POSITIVO']:
+    if doc.cats['NEGATIVO'] > doc.cats['POSITIVO'] and doc.cats['NEGATIVO'] > doc.cats['NEUTRO']:
         categories.append('negativo')
-    else:
+    elif doc.cats['POSITIVO'] > doc.cats['NEGATIVO'] and doc.cats['POSITIVO'] > doc.cats['NEUTRO']:
         categories.append('positivo')
+    else:
+        categories.append('neutro')
     
     print(categories)
 
@@ -82,3 +84,6 @@ def clasificar_emocion(text):
 
 #clasificar_emocion("Mi abuela se murio en 1998")
 
+'''ValueError: [E895] The 'textcat' component received gold-standard annotations with multiple 
+labels per document. In spaCy 3 you should use the 'textcat_multilabel' component for this instead. 
+Example of an offending annotation: {'POSITIVO': True, 'NEGATIVO': False, 'NEUTRO': True}'''
