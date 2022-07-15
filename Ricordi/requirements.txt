@@ -1,0 +1,15 @@
+- Instalar python version 3.9.11 + meter en path
+- Usar python interpreter en visual studio code
+- Instalar chatterbot: pip install chatterbot==1.0.4 porque otras versiones dan errores de instalación 
+- Da error (no existe funcion time.clock) -> cambiar codigo fuente de un archivo de pythona time.time
+- Instalar spacy
+- Instalar MongoDB: https://www.mongodb.com/try/download/community que incluye interfaz MongoDB Compass
+- Abrir MongoDB Compass donde estará la conexion local (darle a connect en el localhost:27017) con 3 BBDD predefinidas
+- Creo una BBDD, Ricorda con una coleccin de conversaciones. 
+
+
+
+
+
+user = lucialat
+password = 7uKj2leR9kV

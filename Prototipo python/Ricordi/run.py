@@ -2,26 +2,36 @@ from flask import Flask
 from flask import render_template, request, redirect, url_for
 import mongobd
 import next_question
+from forms import SignupForm
+from flask_login import LoginManager
 
 question = ""
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'e980e0b2f255ce2e74654f35bf2a3f803227ee66'
+login_manager = LoginManager(app)
+
+#para generar la clave secreta
+#import secrets
+#secrets.token_hex(20)
+
 @app.route('/')
 def index():
     return render_template("index.html")
 
 
 @app.route("/signup/", methods=["GET", "POST"])
-def signup():
-    if request.method == 'POST':
-        name = request.form['name']
-        email = request.form['email']
-        password = request.form['password']
+def show_signup_form():
+    form = SignupForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        email = form.email.data
+        password = form.password.data
         next = request.args.get('next', None)
         if next:
             return redirect(next)
         return redirect(url_for('index'))
-    return render_template("sign_up.html")
+    return render_template("sign_up.html", form=form)
 
 
 @app.route('/chatbot/<int:user_id>/')
@@ -59,3 +69,8 @@ def get_bot_response():
 
 
 # Visual chatbot:       https://buffml.com/web-based-chatbot-using-flask-api/
+
+
+#pip install Flask-WTF
+#pip install email-validator
+#pip install flask-login

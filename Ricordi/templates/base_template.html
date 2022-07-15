@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for("static", filename="style/base.css") }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/chatbot.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <div id="container">
+    
+        <div id="header">
+            <div id="branding">
+                <h1 id="site-name"><a href="{{ url_for('index') }}">Ricorda</a></h1> 
+            </div>
+            <div id="user-tools">
+                {% if current_user.is_anonymous %}
+                    <a href="{{ url_for('login') }}">Login</a>
+                    |
+                    <a href="{{ url_for('show_signup_form') }}">Registrarse</a>
+                {% else %}
+                    {{ current_user.name }} |
+                    <a href="{{ url_for('chat') }}">Conversar</a> |
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% block content %}{% endblock %}
+
+    </div>
+
+</body>
+</html>
+
