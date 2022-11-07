@@ -82,7 +82,7 @@ def clasificar_emocion(text):
 
     return categories
 
-#clasificar_emocion("Mi abuela se murio en 1998")
+clasificar_emocion("Mi abuela se murio en 1998")
 
 '''ValueError: [E895] The 'textcat' component received gold-standard annotations with multiple 
 labels per document. In spaCy 3 you should use the 'textcat_multilabel' component for this instead. 
