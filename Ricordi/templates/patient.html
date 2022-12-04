@@ -1,0 +1,84 @@
+{% extends "base_template.html" %}
+{% block title %}Pacientes Ricorda{% endblock %}
+{% block content %}
+
+
+{% if p %}  
+
+    <h1> INFANCIA </h1>
+    <ul>
+        {% for patient in infancia %}
+        
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+        
+
+        {% endfor %}
+    </ul>
+
+    <h1> ADOLESCENCIA </h1>
+    <ul>
+        {% for patient in adolescencia %}
+            
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+            
+    
+        {% endfor %}
+        </ul>
+    
+        <h1> JUVENTUD </h1>
+        <ul>
+            {% for patient in juventud %}
+                
+                <li>{{ patient['pregunta'] }}
+                    <p>{{ patient['respuesta'] }}</p>
+                </li>
+                
+        
+            {% endfor %}
+        </ul>
+
+        <h1> ETAPA ADULTA </h1>
+        <ul>
+            {% for patient in etapAdulta %}
+                
+                <li>{{ patient['pregunta'] }}
+                    <p>{{ patient['respuesta'] }}</p>
+                </li>
+                
+        
+            {% endfor %}
+        </ul>
+
+        <h1> VEJEZ </h1>
+        <ul>
+            {% for patient in vejez %}
+                
+                <li>{{ patient['pregunta'] }}
+                    <p>{{ patient['respuesta'] }}</p>
+                </li>
+                
+        
+            {% endfor %}
+        </ul>
+
+        <h1> SIN CLASIFICAR </h1>
+        <ul>
+            {% for patient in otros %}
+                
+                <li>{{ patient['pregunta'] }}
+                    <p>{{ patient['respuesta'] }}</p>
+                </li>
+                
+        
+            {% endfor %}
+        </ul>
+
+{% else %}
+    <p>No hay información disponible</p>
+{% endif %}
+
+{% endblock %}

@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for("static", filename="style/base.css") }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style/chatbot.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body>
@@ -20,8 +19,15 @@
                     |
                     <a href="{{ url_for('show_signup_form') }}">Registrarse</a>
                 {% else %}
-                    {{ current_user.name }} |
-                    <a href="{{ url_for('chat') }}">Conversar</a> |
+                    {% if current_user.type == 'paciente' %}
+                        {{ current_user.name }} |
+                        <a href="{{ url_for('patient_info', user_id=current_user.id) }}">Mis recuerdos</a> |
+                        <a href="{{ url_for('chat') }}">Conversar</a> |
+                    {% else %}
+                        {{ current_user.name }} |
+                        <a href="{{ url_for('patients') }}">Pacientes</a> |
+                        <a href="{{ url_for('chat') }}">Conversar</a> |
+                    {% endif %}
                     <a href="{{ url_for('logout') }}">Logout</a>
                 {% endif %}
             </div>

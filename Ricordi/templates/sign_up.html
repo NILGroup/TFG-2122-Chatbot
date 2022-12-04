@@ -28,6 +28,20 @@
             {% endfor %}
         </div>
         <div>
+            {{ form.type.label }}
+            {{ form.type }}<br>
+            {% for error in form.type.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.code.label }}
+            {{ form.code }}<br>
+            {% for error in form.code.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
             {{ form.submit() }}
         </div>
     </form>

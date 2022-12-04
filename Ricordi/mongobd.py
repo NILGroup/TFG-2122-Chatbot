@@ -65,3 +65,8 @@ def insert_answer(question, answer, user_id):
     #db.preguntas.update_one({"pregunta": question}, {"$set":{"asked": "True"}})
 
 #insert_answer("hola", "Me llamo Lucía y tengo 23 años")
+
+def get_patients_info(user):
+    db = connection()
+    answers = list(db.respuestas.find({"user_id": user}))
+    return answers

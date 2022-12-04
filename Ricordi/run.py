@@ -1,8 +1,9 @@
+from random import randint
 from flask import Flask
 from flask import render_template, request, redirect, url_for
 import mongobd
 import next_question
-from forms import LoginForm, SignupForm
+from forms import LoginForm, RegisterPatientForm, SignupForm
 from flask_login import LoginManager, current_user, login_required, login_user, logout_user
 from werkzeug.urls import url_parse
 from time import gmtime, strftime
@@ -24,7 +25,7 @@ app.config['MYSQL_DB'] = 'flask'
 mysql = MySQL(app)'''
 
 
-from models import User
+from models import Therapy, User
 
 
 @login_manager.user_loader
@@ -64,22 +65,43 @@ def show_signup_form():
         name = form.name.data
         email = form.email.data
         password = form.password.data
+        type = form.type.data
+        code = form.code.data
         # Comprobamos que no hay ya un usuario con ese email
         user = User.get_by_email(email)
         if user is not None:
             error = f'El email ya está siendo utilizado por otro usuario'
         else:
-            # Guardamos el usuario
-            user = User(id="",name=name, email=email,password="")
-            user.set_password(password)
-            user.save()
-            user = User.get_by_email(email)
-            # Dejamos al usuario logueado
-            login_user(user, True)
-            next_page = request.args.get('next', None)
-            if not next_page or url_parse(next_page).netloc != '':
-                next_page = url_for('index')
-            return redirect(next_page)
+            if type == 'paciente':
+                therapy = Therapy.get_by_code(code)
+                if therapy is None:
+                    error = f'No existe terapia para ese código'
+                else:
+                    user = User(id="",name=name, email=email,password="",type=type)
+                    user.set_password(password)
+                    user.save()
+                    user = User.get_by_email(email)
+                    if type == 'paciente' and therapy is not None:
+                        therapy = Therapy(id="", therapist=therapy.therapist, patient=user.id, code=code)
+                        therapy.save()
+                    # Dejamos al usuario logueado
+                    login_user(user, True)
+                    next_page = request.args.get('next', None)
+                    if not next_page or url_parse(next_page).netloc != '':
+                        next_page = url_for('index')
+                    return redirect(next_page)
+            else: 
+                # Guardamos el usuario
+                user = User(id="",name=name, email=email,password="",type=type)
+                user.set_password(password)
+                user.save()
+                user = User.get_by_email(email)
+                # Dejamos al usuario logueado
+                login_user(user, True)
+                next_page = request.args.get('next', None)
+                if not next_page or url_parse(next_page).netloc != '':
+                    next_page = url_for('index')
+                return redirect(next_page)
     return render_template("sign_up.html", form=form, error=error)
 
 
@@ -136,6 +158,60 @@ def get_bot_response():
     print("Holaaaaaaaaa aqui estamos")
     user_answer = request.args.get('answer')
     return chatbot_response(user_answer)
+
+@app.route('/patients') 
+@login_required
+def patients():
+    patients = User.get_therapists_patients(current_user.id)
+    return render_template("patients.html", patients=patients)
+
+@app.route('/patient/<int:user_id>/') 
+@login_required
+def patient_info(user_id):
+    patient = None
+    infancia = []
+    adolescencia = []
+    juventud = []
+    etapAdulta = []
+    vejez = []
+    otros = []
+    if (current_user.type == 'paciente' and current_user.id == user_id) or user_id in Therapy.get_patients_id(current_user.id):
+        patient = mongobd.get_patients_info(user_id)
+        for p in patient:
+            cat = p['categorias']
+            if "infancia" in cat:
+                infancia.append(p)
+            elif "adolescencia" in cat:
+                adolescencia.append(p)
+            elif "juventud" in cat:
+                juventud.append(p)
+            elif "etapa adulta" in cat:
+                etapAdulta.append(p)
+            elif "vejez" in cat:
+                vejez.append(p)
+            else:
+                otros.append(p)
+    return render_template("patient.html", p=patient, infancia=infancia, adolescencia=adolescencia, juventud=juventud, etapAdulta=etapAdulta, vejez=vejez, otros=otros)
+
+@app.route('/new_patient', methods=['GET', 'POST']) 
+@login_required
+def new_patient():
+    form = RegisterPatientForm()
+    num = None
+    if form.validate_on_submit():
+        therapy = Therapy(id="", therapist=current_user.id, patient="", code=form.num.data)
+        Therapy.create(therapy)
+        next_page = request.args.get('next', None)
+        if not next_page or url_parse(next_page).netloc != '':
+            next_page = url_for('patients')
+        return redirect(next_page)
+    else:
+        num = randint(100, 999)
+        while Therapy.comprobar_num(num):
+            num = randint(100, 999)
+        form.num.data = num
+    return render_template("new_patient.html", form=form, num=num)
+
 
 
 
