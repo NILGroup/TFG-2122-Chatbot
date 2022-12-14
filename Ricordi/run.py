@@ -199,7 +199,7 @@ def new_patient():
     form = RegisterPatientForm()
     num = None
     if form.validate_on_submit():
-        therapy = Therapy(id="", therapist=current_user.id, patient="", code=form.num.data)
+        therapy = Therapy(id="", therapist=current_user.id, patient="", code=form.num.data, user=form.user.data)
         Therapy.create(therapy)
         next_page = request.args.get('next', None)
         if not next_page or url_parse(next_page).netloc != '':
@@ -210,7 +210,8 @@ def new_patient():
         while Therapy.comprobar_num(num):
             num = randint(100, 999)
         form.num.data = num
-    return render_template("new_patient.html", form=form, num=num)
+        therapies = Therapy.get_unused_codes(current_user.id)
+    return render_template("new_patient.html", form=form, num=num, therapies=therapies)
 
 
 
@@ -232,3 +233,7 @@ def new_patient():
 #pip install cryptography
 
 #https://parzibyte.me/blog/2021/03/29/flask-mysql-ejemplo-conexion-crud/
+
+# Si mongodb da ECONNREFUSED 127.0.0.1:27017 -> problema de no espacio en sdxc o ir a servicios, buscar el de mongo y darle a iniciar
+# https://www.youtube.com/watch?v=W0tvOEdjQ6Y
+# https://bobcares.com/blog/mongodb-error-1067/

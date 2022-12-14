@@ -106,11 +106,12 @@ class User(UserMixin):
     
 
 class Therapy():
-    def __init__(self, id, therapist, patient, code):
+    def __init__(self, id, therapist, patient, code, user):
         self.id = id
         self.therapist = therapist
         self.patient = patient
         self.code = code
+        self.user = user
 
     '''def save(self):
         conexion = obtener_conexion()
@@ -123,7 +124,7 @@ class Therapy():
     def save(self):
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("UPDATE therapy SET patient = %s, code = NULL WHERE code = %s",
+            cursor.execute("UPDATE therapy SET patient = %s, code = NULL, user = NULL WHERE code = %s",
                        (self.patient, self.code))
         conexion.commit()
         conexion.close()
@@ -131,8 +132,8 @@ class Therapy():
     def create(self):
         conexion = obtener_conexion()
         with conexion.cursor() as cursor:
-            cursor.execute("INSERT INTO therapy(therapist, code) VALUES (%s, %s)",
-                       (self.therapist, self.code))
+            cursor.execute("INSERT INTO therapy(therapist, code, user) VALUES (%s, %s, %s)",
+                       (self.therapist, self.code, self.user))
         conexion.commit()
         conexion.close()
 
@@ -144,7 +145,7 @@ class Therapy():
             query = cursor.fetchone()
         conexion.close()
         if query is not None:
-            therapy = Therapy(query[0], query[1], query[2], query[3])
+            therapy = Therapy(query[0], query[1], query[2], query[3], query[4])
             return therapy
         else:
              return None
@@ -172,5 +173,20 @@ class Therapy():
         for row in query:
             if row[2] is not None:
                 result.append(row[2])
+
+        return result
+
+    @staticmethod
+    def get_unused_codes(id):
+        result = []
+        conexion = obtener_conexion()
+        with conexion.cursor() as cursor:
+            cursor.execute("SELECT * FROM therapy WHERE therapist = %s", id)
+            query = cursor.fetchall()
+        conexion.close()
+        for row in query:
+            if row[2] is None and row[3] is not None:
+                therapy = Therapy(row[0], row[1], row[2], row[3], row[4])
+                result.append(therapy)
 
         return result

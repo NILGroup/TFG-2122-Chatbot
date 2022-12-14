@@ -2,9 +2,9 @@
 {% block title %}Pacientes Ricorda{% endblock %}
 {% block content %}
 
-
+<div class="otroscodigos">
 {% if p %}  
-
+    {% if infancia %}  
     <h1> INFANCIA </h1>
     <ul>
         {% for patient in infancia %}
@@ -16,7 +16,9 @@
 
         {% endfor %}
     </ul>
+    {% endif %}
 
+    {% if adolescencia %} 
     <h1> ADOLESCENCIA </h1>
     <ul>
         {% for patient in adolescencia %}
@@ -27,58 +29,68 @@
             
     
         {% endfor %}
-        </ul>
+    </ul>
+    {% endif %} 
+
+    {% if juventud %} 
+    <h1> JUVENTUD </h1>
+    <ul>
+        {% for patient in juventud %}
+            
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+            
     
-        <h1> JUVENTUD </h1>
-        <ul>
-            {% for patient in juventud %}
-                
-                <li>{{ patient['pregunta'] }}
-                    <p>{{ patient['respuesta'] }}</p>
-                </li>
-                
-        
-            {% endfor %}
-        </ul>
+        {% endfor %}
+    </ul>
+    {% endif %} 
 
-        <h1> ETAPA ADULTA </h1>
-        <ul>
-            {% for patient in etapAdulta %}
-                
-                <li>{{ patient['pregunta'] }}
-                    <p>{{ patient['respuesta'] }}</p>
-                </li>
-                
-        
-            {% endfor %}
-        </ul>
+    {% if etapAdulta %} 
+    <h1> ETAPA ADULTA </h1>
+    <ul>
+        {% for patient in etapAdulta %}
+            
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+            
+    
+        {% endfor %}
+    </ul>
+    {% endif %} 
 
-        <h1> VEJEZ </h1>
-        <ul>
-            {% for patient in vejez %}
-                
-                <li>{{ patient['pregunta'] }}
-                    <p>{{ patient['respuesta'] }}</p>
-                </li>
-                
-        
-            {% endfor %}
-        </ul>
+    {% if vejez %} 
+    <h1> VEJEZ </h1>
+    <ul>
+        {% for patient in vejez %}
+            
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+            
+    
+        {% endfor %}
+    </ul>
+    {% endif %} 
 
-        <h1> SIN CLASIFICAR </h1>
-        <ul>
-            {% for patient in otros %}
-                
-                <li>{{ patient['pregunta'] }}
-                    <p>{{ patient['respuesta'] }}</p>
-                </li>
-                
-        
-            {% endfor %}
-        </ul>
+    {% if otros %} 
+    <h1> SIN CLASIFICAR </h1>
+    <ul>
+        {% for patient in otros %}
+            
+            <li>{{ patient['pregunta'] }}
+                <p>{{ patient['respuesta'] }}</p>
+            </li>
+            
+    
+        {% endfor %}
+    </ul>
+    {% endif %} 
 
 {% else %}
-    <p>No hay información disponible</p>
+    <h1>No hay información disponible</h1>
 {% endif %}
+</div>
 
 {% endblock %}

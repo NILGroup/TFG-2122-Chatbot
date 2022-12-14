@@ -36,16 +36,51 @@ sup, sub {
     line-height: 0
 }
 
-/*.user-info {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-.user-info li {
+/*LOGIN*/
+form {
+    border: 3px solid #f1f1f1;
+    margin: 5%;
+    padding: 16px;
+  }
+  
+  /* Full-width inputs */
+  input[type=text], input[type=password], input[type=number], input[type=checkbox], select {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 12px 0;
     display: inline-block;
-    margin: 0;
-    padding: 0 10px 0 0;
-}*/
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  
+  /* Set a style for all buttons */
+  input[type=submit] {
+    background-color: #888;
+    color: white;
+    padding: 14px 20px;
+    margin: 12px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  /* Add a hover effect for buttons */
+  input[type=submit]:hover {
+    opacity: 0.8;
+  }
+
+h1.randnum {
+    font-size: 5em;
+    text-align: center;
+}
+
+div .otroscodigos {
+    margin-left: 5%;
+    margin-right: 5%;
+    padding: 16px;
+  }
+
+
 
 #header {
     width: auto;

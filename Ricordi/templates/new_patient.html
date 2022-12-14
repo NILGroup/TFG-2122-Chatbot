@@ -2,14 +2,79 @@
 {% block title %}Pacientes Ricorda{% endblock %}
 {% block content %}
 
-<h1>{{num}}</h1>
+
 
 <form action="" method="post" novalidate>
+
+    <div>
+        {{ form.user.label }}
+        {{ form.user(size=64) }}
+        {% for error in form.user.errors %}
+            <span style="color: red;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <h1 class="randnum">Código: {{num}}</h1>
     {{ form.hidden_tag() }}
     <div>
         {{ form.num }}
         {{ form.submit() }}
     </div>
 </form>
+
+<div class="otroscodigos">
+
+    {% if therapies %}
+    <h3>Usuarios sin registrar:</h3>
+
+    <div class="module" id="changelist">
+    <div class="changelist-form-container">
+        
+                        
+        <div class="results">
+            <table id="result_list">
+            <thead>
+                <tr>
+                
+                <th scope="col" class="column-__str__">
+
+                    <div class="text"><span>Usuario</span></div>
+                    <div class="clear"></div>
+                </th>
+
+                <th scope="col" class="column-__str__">
+
+                    <div class="text"><span>Código</span></div>
+                    <div class="clear"></div>
+                </th>
+
+                </tr>
+
+            </thead>
+            <tbody>
+
+                {% for ther in therapies %}
+                <tr>
+
+                    <th class="field-__str__">
+                    {{ ther.user }}
+                    </th>
+
+                    <th class="field-__str__">
+                    {{ ther.code }}
+                    </th>
+
+                {% endfor %}
+            
+            </tbody>
+            </table>
+        </div>
+            
+
+    </div>
+
+    </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}

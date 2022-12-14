@@ -18,5 +18,6 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Login')
 
 class RegisterPatientForm(FlaskForm):
+    user = StringField('Usuario', validators=[DataRequired(), Length(max=64)])
     num = HiddenField("num")
     submit = SubmitField('Registrar paciente')
