@@ -1,7 +1,11 @@
 \chapter{Arquitectura}
 \label{cap:arquitectura}
 
-\section{Prototipo primero de análisis de sentimientos de un texto}
+\section{Análisis de los recuerdos}
+
+Los sistemas de análisis automático de texto tienen como objetivo entender la información no estructurada hablada por los humanos y convertirla en información estructurada como podría ser un resumen del contenido o la clasificación de un documento por temática. En este caso, se busca conseguir esta información estructurada a partir de la mayor cantidad de recuerdos posibles para ayudar a los terapeutas a construir la historia de vida de un paciente que es mucho más complicada de tratar en bruto. El análisis que se pretende realizar de estos recuerdos es por un lado clasifican en etapas de vida. El análisis se va a realizar en varios sentidos, por un lado, se clasificarán los recuerdos en etapas de vida, para estructurar la información lo máximo posible. Por otro lado, se determinará si el texto contiene connotaciones positivas o negativas, de tal forma que en la terapia se puedan evitar los recuerdos negativos que pueden agravar la situación del paciente. Por último, se utilizará el procesamiento del lenguaje natural mediante el análisis morfológico de las palabras para comprender lo que quiere decir el paciente y poder generar la respuesta más acertada y relacionada con la temática que se está tratando. 
+
+\subsection{Clasificación de los recuerdos}
 
 Se ha probado una forma de clasificar texto utilizando TextCategorizer \footnote{https://spacy.io/api/textcategorizer} de la librería spacy de python. Se trata de entrenar un modelo para saber identificar si un recuerdo es positivo o negativo. Se ha utilizado el código del artículo \textit{How to Train Text Classification Model in spaCy} \footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/} para probar cómo se podría entrenar el modelo para que supiese diferenciar los recuerdos negativos de los positivos y así tener la primera clasificación que pidieron los terapeutas especializados del proyecto CANTOR. Antes de probar con recuerdos se probó con un dataset muy grande de reseñas de moda que se ponía como ejemplo en el artículo del que hablábamos anteriormente. Después, se ha probado usando una batería menor de recuerdos positivos encontrados entre los archivos del TFG de Laura Castillo \citep{reminiscencia}. También había que incluir recuerdos negativos, como no se ha encontrado ningún dataset ni textos relacionados, se han usado frases negativas aleatorias.
 
@@ -13,7 +17,30 @@ Una vez afinado el modelo mediante el entreno previo, ya podemos ponerlo a prueb
 
 --------Meter problemas probando el neutro
 
-\section{Módulo primero de encadenamiento entre preguntas y respuestas}
+\subsubsection{Análisis de sentimiento}
+
+\subsubsection{Clasificación en etapas de vida}
+
+Para categorizar las respuestas según el sentimiento usaremos directamente el prototipo del apartado de análisis de sentimientos de un texto. Se ha añadido un archivo ``analyze\_answer'' que entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega e identifica si es negativo o positivo. Esto se añade como una categoría que se meterá en la base de datos junto a la respuesta. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias. 
+
+Otra categoría que se añadirá junto a la respuesta será la de la etapa de la vida a la que corresponde. Primero tenemos que definir esas etapas y para ello me he basado en la clasificación que hace el Ministerio de Salud de Colombia ( https://www.minsalud.gov.co/proteccionsocial/Paginas/cicloVida.aspx) porque no he encontrado ninguna clasificación tan clara para España y me parecía una forma sensata de clasificación. Le he hecho algunas modificaciones para adecuarme más a lo que quería sacar en claro de la información que se me presentaba. Las etapas serían las siguientes:
+\begin{itemize}
+	\item Infancia de 0 a 11 años
+	\item Adolescencia de 12 a 17 años
+	\item Juventud de 18 a 26 años
+	\item Etapa adulta de 27 a 59 años
+	\item Vejez de 60 años o más
+	\item Indeterminado para aquellos textos en los que no se pueda distinguir la etapa
+\end{itemize}
+
+Una vez elegidos los periodos de tiempo en los que se divide la vida de las personas, el objetivo es clasificar recuerdos, dados en forma de respuesta a una pregunta, según la etapa de la vida a la que pertenecía el recuerdo de la persona interrogada. Para ello, también se ha utilizado la misma tecnología que el prototipo primero de análisis de sentimientos. Además de entrenarse en recuerdos positivos y negativos, ahora el modelo se entrena para distinguir etapas vitales en las que ocurren los recuerdos para así, de cara a la elaboración de un libro de vida, que toda la información esté bien estructurada en periodos de tiempo. 
+
+---- Meter problemas con la etapa de vida indeterminada 
+
+Se ha probado con neutro pero no funcionaba igual de bien, se necesitan muchos más textos de entrada. Para poder hacer este análisis se han utilizado los recursos de la una pagina web \footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/} de demostración del uso de spacy. El manual de usuario de spacy \footnote{https://spacy.io/api/textcategorizer} no ha resultado ser muy explicativo.
+
+\subsection{Procesamiento del texto para encadenar preguntas y respuestas}
+ 
 Esta sección consiste en conseguir que las preguntas que se hagan al interrogado tengan sentido con el resto de la conversación previa. Conseguir que sean lo más inteligentes y adecuadas posible. 
 
 Lo primero que se ha hecho para encontrar la siguiente pregunta a hacer es coger la lista de todas las posibles preguntas y eliminar aquellas que ya han sido contestadas anteriormente para no repetirlas. 
@@ -31,25 +58,6 @@ Estas funciones se han utilizado para conseguir una representación del texto m�
 
 Por último, dada la respuesta y todas las posibles preguntas ya reducidas a sus lemas, para encontrar la pregunta más adecuada, se compara una a una los lemas de las posibles preguntas con los lemas de la respuesta. Dentro de la lista de posibles preguntas, la que más lemas comunes tenga con la respuesta, gana como siguiente pregunta a formular.
 
-\section{Módulo primero de clasificación de respuestas en etapas de vida y en sentimientos}
-
-Para categorizar las respuestas según el sentimiento usaremos directamente el prototipo del apartado de análisis de sentimientos de un texto. Se ha añadido un archivo ``analyze\_answer'' que entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega e identifica si es negativo o positivo. Esto se añade como una categoría que se meterá en la base de datos junto a la respuesta. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias. 
-
-Otra categoría que se añadirá junto a la respuesta será la de la etapa de la vida a la que corresponde. Primero tenemos que definir esas etapas y para ello me he basado en la clasificación que hace el Ministerio de Salud de Colombia ( https://www.minsalud.gov.co/proteccionsocial/Paginas/cicloVida.aspx) porque no he encontrado ninguna clasificación tan clara para España y me precía una forma sensata de clasificación. Le he hecho algunas modificaciones para adecuarme más a lo que quería sacar en claro de la información que se me presentaba. Las etapas serían las siguientes:
-\begin{itemize}
-	\item Infancia de 0 a 11 años
-	\item Adolescencia de 12 a 17 años
-	\item Juventud de 18 a 26 años
-	\item Etapa adulta de 27 a 59 años
-	\item Vejez de 60 años o más
-	\item Indeterminado para aquellos textos en los que no se pueda distinguir la etapa
-\end{itemize}
-
-Una vez elegidos los periodos de tiempo en los que se divide la vida de las personas, el objetivo es clasificar recuerdos, dados en forma de respuesta a una pregunta, según la etapa de la vida a la que pertenecía el recuerdo de la persona interrogada. Para ello, también se ha utilizado la misma tecnología que el prototipo primero de análisis de sentimientos. Además de entrenarse en recuerdos positivos y negativos, ahora el modelo se entrena para distinguir etapas vitales en las que ocurren los recuerdos para así, de cara a la elaboración de un libro de vida, que toda la información esté bien estructurada en periodos de tiempo. 
-
----- Meter problemas con la etapa de vida indeterminada 
-
-Se ha probado con neutro pero no funcionaba igual de bien, se necesitan muchos más textos de entrada. Para poder hacer este análisis se han utilizado los recursos de la una pagina web \footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/} de demostración del uso de spacy. El manual de usuario de spacy \footnote{https://spacy.io/api/textcategorizer} no ha resultado ser muy explicativo.
 
 \section{Bases de datos}
 
@@ -57,14 +65,40 @@ Se han usado dos tipos de bases de datos, una relacional en MySQL encargada de a
 
 \subsection{MySQL}
 
-Se trata de una base de datos ideal para conjuntos de datos que tienen una estructura fija, como en este caso, los datos de inicio de sesión de los usuarios. Se ha construido una base de datos con una única tabla de usuarios en la que para cada registro tendremos el identificador, único y clave primaria; el nombre de usuario; el correo electrónico, único también, y la contraseña, que se guardará cifrada. Cuando se intente iniciar sesión, se comprobará si los datos son correctos. 
+Se trata de una base de datos ideal para conjuntos de datos que tienen una estructura fija, como en este caso, los datos de inicio de sesión de los usuarios y los datos de las terapias que asocian a los terapeutas con sus pacientes. Es por esto que se ha construido una base de datos con dos tablas, una que identifica a los usuarios y otra que guarda la información sobre las terapias. En la figura \ref{fig:diseñoinicialappterapeuta1}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Imagenes/Vectorial/diagrama_entidad_relacion_mysql}
+	\caption{Diagrama de entidad-relación MySQL}
+	\label{fig:diagramaEER}
+\end{figure}
+
+\subsubsection{Tabla de usuarios}
+de usuarios en la que para cada registro tendremos el identificador, único y clave primaria; el nombre de usuario; el correo electrónico, único también, y la contraseña, que se guardará cifrada. Cuando se intente iniciar sesión, se comprobará si los datos son correctos.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Imagenes/Vectorial/diagrama_tabla_users}
+	\caption{Diagrama de la tabla de usuarios}
+	\label{fig:diagramatablausers}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Imagenes/Vectorial/diagrama_tabla_therapy}
+	\caption{Diagrama de la tabla de terapias}
+	\label{fig:diagramatablatherapy}
+\end{figure}
+
 
 \subsection{MongoDB}
 
 
+
 \section{Aplicación web}
 
-La aplicación web se ha creado para que el chatbot sea más visible y manejable.
+La aplicación web se ha creado con el objetivo de proporcionar funcionalidades tanto para los posibles terapeutas como para sus posibles pacientes. Por un lado, el chatbot se ha pensado para que lo usen los pacientes y es el foco principal de este TFG y, donde se han aplicado todas las técnicas que se han tratado en las secciones anteriores. La aplicación web permite probar el chatbot de forma mucho más manejable y visible que desde un terminal del entorno de desarrollo. Por otro lado, se ha querido añadir las funcionalidades para los supuestos terapeutas que, podrían acceder a los recuerdos de sus pacientes de forma sencilla y visual.
 
 \subsection{Prototipo inicial}
 
@@ -154,9 +188,11 @@ Este prototipo se descartó porque se centraba mucho en hacer una aplicación we
 
 Por otro lado, en junio de 2022 se presetó el TFG ``Recuérdame: Aplicación de apoyo para el tratamiento de personas con problemas de memoria mediante terapias basadas en reminiscencia'', que precisamente se encarga del desarrollo de una aplicación web completa para facilitar la tarea del terapeuta que tiene que ayudar a usuarios con demencia a través de la terapia ocupacional basada en reminiscencia. Es decir, no tenía sentido que yo desarrollase una aplicación web para usuario y terapeuta porque ya se estaba desarrollando una cosa muy parecida en otro trabajo de fin de grado. Es por eso que la recomendación de mis tutores de centrarme en el desarrollo del chatbot fue la acertada. Aun así, sí que se ha desarrollado una pequeña aplicación web para mostrar de forma más visual la funcionalidad del chatbot. El diseño y la implementación de la misma se explicarán en las siguientes secciones.
 
-\subsection{Diseño final}
 
-\subsection{Implementación}
+
+\subsection{Implementación final}
+
+---- A nivel de css no me he querido meter en detalles técnicos, porque que se vea bonito no era el objetivo principal de la aplicación sino algo secundario
 
 Para la aplicación del chatbot, con la que el usuario con demencia interactuaría, se ha decidido usar el \textit{framework} de creación de aplicaciones ``Flask''. Se trata de un framework para la creación rápida de aplicaciones desarrolladas con Python. Se estuvo planteando usar el framework ``Django'' pero finalmente se optó por Flask porque Django es para aplicaciones mucho más grandes y complejas de lo que se proponía crear para este trabajo. Flask es mucho más intuitivo y fácil de usar, además, con solo un par de líneas se puede levantar una aplicación web sin necesidad de librerías ni herramientas accesorias. 
 
@@ -195,7 +231,7 @@ Flask incluye un servidor interno propio al que se podrá acceder desde \textit{
 Una vez tenemos funcionando la aplicación ya solo queda ampliar sus funcionalidades que se explicarán a continuación. 
 
 
-\subsection{Funcionalidad inicio de sesión}
+\subsection{Funcionalidad inicio de sesión y registro}
 
 Se añade esta nueva funcionalidad para que cada recuerdo se puedan asociar a un usuario y así dar la posibilidad de guardar incontables historias de vida. De la mano del inicio de sesión, se encuentra la funcionalidad del registro de usuarios que se contará también en esta sección de la memoria. De nuevo, para ambas funcionalidades, me he guiado por el tutorial de Flask \footnote{https://j2logo.com/tutorial-flask-leccion-3-formularios-wtforms/} de la página ``J2logo'' y hay algunas líneas de código que he cogido directamente. En este caso, esta página web nos guía en el uso de formularios en Flask, que se requieren tanto para el inicio de sesión como para el registro de usuarios. 
 
@@ -211,13 +247,13 @@ Aparte de haber definido el formulario, se necesita una url asociada a cada pág
 
 ------- Aquí se ha dejado de contar con tanto detalle puesto que no se si se debería hablar tan en profundidad, incluso sobre el código
 
-El inicio de sesión de usuario consiste en introducir los campos email y contraseña que se hayan usado en el registro. Si coinciden y la contraseña es correcta se se dará acceso al resto de funcionalidades y se redirigirá al usuario de nuevo a la página principal pero ya identificado.En el caso de que el email no exista o la contraseña sea incorrecta se mostrará el siguiente error: ``Error al iniciar sesión'', y se pedirán los datos de nuevo.
+El inicio de sesión de usuario consiste en introducir los campos email y contraseña que se hayan usado en el registro. Si coinciden y la contraseña es correcta se dará acceso al resto de funcionalidades y se redirigirá al usuario de nuevo a la página principal pero ya identificado.En el caso de que el email no exista o la contraseña sea incorrecta se mostrará el siguiente error: ``Error al iniciar sesión'', y se pedirán los datos de nuevo.
 
 La página de registro es parecida a la de inicio de sesión pero añadiendo un campo más, el nombre, que se utilizará para que la aplicación se dirija al usuario. El email y la contraseña se guardarán en la base de datos de MySQL y se utilizarán para comprobar si el inicio de sesión es correcto. La contraseña se guarda encriptada mediante un hash gracias a la librería ``werkzeug.security'' de Python, que proporciona funciones para generar el \textit{hash} y para comprobar si una cadena de caracteres dada coincide con la contraseña encriptada.
 
 \subsection{Funcionalidad chatbot}
 
-El chatbot es la funcionalidad principal de la aplicación y es en lo que a nivel de backend se ha invertido más tiempo. Sin la parte visual del frontend, el chatbot también funciona desde la línea de comandos de Pyhton. Sin embargo, se ha decidido hacer la aplicación web para facilitar la interacción con el usuario. Esta funcionalidad consiste en un chat convencional en el que el usuario interactúa con la máquina que hay detrás, aunque se distingue de otras inteligencias artificiales de tipo chatbot porque es el bot de detrás quién llevará la conversación y el que pregunta o habla con el usuario y no al revés. 
+El chatbot es la funcionalidad principal de la aplicación y es en lo que a nivel de backend se ha invertido más tiempo. Sin la parte visual del frontend, el chatbot también funciona desde la línea de comandos de Python. Sin embargo, se ha decidido hacer la aplicación web para facilitar la interacción con el usuario. Esta funcionalidad consiste en un chat convencional en el que el usuario interactúa con la máquina que hay detrás. No obstante, esta funcionalidad se distingue de otras inteligencias artificiales de tipo chatbot porque es el bot quién dirige la conversación y el que pregunta o habla con el usuario y no al revés. 
 
 
 Lista: 
@@ -226,8 +262,49 @@ Lista:
 - Meter funcionalidad de sacar la informacion recabada tanto para que la vea el usuario como para que la vea el terapeuta + apartado para el terapeuta y que pueda añadir preguntas específicas para cada usuario. 
 - Contar por qué se ha usado mongo y hacer diagramas de base de datos
 - Flujo de la aplicación (de que pasa en cada caso)
-- Prototipo final de la app 
 
+\subsection{Funcionalidad usuario terapeuta vs usuario paciente}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Imagenes/Vectorial/funcionalidad_terapeutavspaciente}
+	\caption{Funcionalidad consultar pacientes registrados}
+	\label{fig:funcionalidadterapeutavspacientes}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=1.0]{Imagenes/Vectorial/funcionalidad_terapeutavspaciente2}
+	\caption{Funcionalidad consultar pacientes registrados}
+	\label{fig:funcionalidad_terapeutavspaciente2}
+\end{figure}
+
+\subsection{Funcionalidad consulta de pacientes registrados por parte del terapeuta}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{Imagenes/Vectorial/funcionalidad_consultar_pacientes}
+	\caption{Funcionalidad consultar pacientes registrados}
+	\label{fig:funcionalidadconsultadepacientes}
+\end{figure}
+
+\subsection{Funcionalidad crear nuevo paciente}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{Imagenes/Vectorial/funcionalidad_nuevo_paciente}
+	\caption{Funcionalidad crear nuevo paciente}
+	\label{fig:funcionalidadnuevopaciente}
+\end{figure}
+
+\subsection{Funcionalidad historia de vida de un paciente}
+ 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.3]{Imagenes/Vectorial/funcionalidad_historia_vida}
+	\caption{Funcionalidad crear nuevo paciente}
+	\label{fig:funcionalidadhistoriavida}
+\end{figure}
 
 
 

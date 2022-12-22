@@ -18,7 +18,7 @@ textcat = nlp.add_pipe('textcat')
 
 textcat.add_label("POSITIVO")
 textcat.add_label("NEGATIVO")
-textcat.add_label("NEUTRO")
+#textcat.add_label("NEUTRO")
 
 memories['tuples'] = memories.apply(lambda row: (row['Recuerdo'],row['IND']), axis=1)
 train =memories['tuples'].tolist()
@@ -71,18 +71,29 @@ def clasificar_emocion(text):
     doc = nlp(text)
     print('{}: {}'.format(text, doc.cats))
 
-    if doc.cats['NEGATIVO'] > doc.cats['POSITIVO'] and doc.cats['NEGATIVO'] > doc.cats['NEUTRO']:
+    '''if doc.cats['NEGATIVO'] > doc.cats['POSITIVO'] and doc.cats['NEGATIVO'] > doc.cats['NEUTRO']:
         categories.append('negativo')
     elif doc.cats['POSITIVO'] > doc.cats['NEGATIVO'] and doc.cats['POSITIVO'] > doc.cats['NEUTRO']:
         categories.append('positivo')
     else:
-        categories.append('neutro')
+        categories.append('neutro')'''
+
+    if doc.cats['NEGATIVO'] > doc.cats['POSITIVO']:
+        categories.append('negativo')
+    else:
+        categories.append('positivo')
     
     print(categories)
 
     return categories
 
 clasificar_emocion("Mi abuela se murio en 1998")
+'''clasificar_emocion("Mi mejor recuerdo es el del nacimiento de mi hijo")
+clasificar_emocion("Tengo 23 años")
+clasificar_emocion("Me dolió muchísimo cuando me rompí una pierna")
+clasificar_emocion("Mi hermano y yo nos pasabamos las tardes haciendo puzzles")
+clasificar_emocion("Durante la infancia estuvimos viviendo en Moratalaz")
+clasificar_emocion("Mi pareja sufrió depresión después del parto")'''
 
 '''ValueError: [E895] The 'textcat' component received gold-standard annotations with multiple 
 labels per document. In spaCy 3 you should use the 'textcat_multilabel' component for this instead. 
