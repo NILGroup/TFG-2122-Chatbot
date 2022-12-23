@@ -19,8 +19,9 @@ def load_data_phases(train, limit=0, split=0.8):
     random.shuffle(train_data)
     texts, labels = zip(*train_data)
     # get the categories for each review
-    cats = [{"INFANCIA": (False, True)[y == 0], "ADOLESCENCIA": (False, True)[y == 1], "JUVENTUD": (False, True)[y == 2], "ETAPA ADULTA": (False, True)[y == 3], "VEJEZ": (False, True)[y == 4], "INDETERMINADO": (False, True)[y == 5]} for y in labels]
-
+    cats = [{"INFANCIA": (False, True)[y == 0], "JUVENTUD": (False, True)[y == 2], "ETAPA ADULTA": (False, True)[y == 3], "VEJEZ": (False, True)[y == 4]} for y in labels]
+    #, "INDETERMINADO": (False, True)[y == 5]
+    # "ADOLESCENCIA": (False, True)[y == 1],
     # Splitting the training and evaluation data
     split = int(len(train_data) * split)
     return (texts[:split], cats[:split]), (texts[split:], cats[split:])
