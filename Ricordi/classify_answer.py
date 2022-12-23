@@ -16,11 +16,11 @@ memories = memories[['Recuerdo','Etapa']].dropna()
 textcat = nlp.add_pipe('textcat')
 
 textcat.add_label("INFANCIA")
-textcat.add_label("ADOLESCENCIA")
+#textcat.add_label("ADOLESCENCIA")
 textcat.add_label("JUVENTUD")
 textcat.add_label("ETAPA ADULTA")
 textcat.add_label("VEJEZ")
-textcat.add_label("INDETERMINADO")
+#textcat.add_label("INDETERMINADO")
 
 
 memories['tuples'] = memories.apply(lambda row: (row['Recuerdo'],row['Etapa']), axis=1)
@@ -74,7 +74,7 @@ def clasificar_etapas(text):
     doc = nlp(text)
     print('{}: {}'.format(text, doc.cats))
     
-    if doc.cats['INFANCIA'] > doc.cats['ADOLESCENCIA'] and doc.cats['INFANCIA'] > doc.cats['JUVENTUD'] and doc.cats['INFANCIA'] > doc.cats['ETAPA ADULTA'] and doc.cats['INFANCIA'] > doc.cats['VEJEZ'] and doc.cats['INFANCIA'] > doc.cats['INDETERMINADO']:
+    '''if doc.cats['INFANCIA'] > doc.cats['ADOLESCENCIA'] and doc.cats['INFANCIA'] > doc.cats['JUVENTUD'] and doc.cats['INFANCIA'] > doc.cats['ETAPA ADULTA'] and doc.cats['INFANCIA'] > doc.cats['VEJEZ'] and doc.cats['INFANCIA'] > doc.cats['INDETERMINADO']:
         categories.append('infancia')
     elif doc.cats['ADOLESCENCIA'] > doc.cats['INFANCIA'] and doc.cats['ADOLESCENCIA'] > doc.cats['JUVENTUD'] and doc.cats['ADOLESCENCIA'] > doc.cats['ETAPA ADULTA'] and doc.cats['ADOLESCENCIA'] > doc.cats['VEJEZ'] and doc.cats['ADOLESCENCIA'] > doc.cats['INDETERMINADO']:
         categories.append('adolescencia')
@@ -85,7 +85,16 @@ def clasificar_etapas(text):
     elif doc.cats['VEJEZ'] > doc.cats['INFANCIA'] and doc.cats['VEJEZ'] > doc.cats['JUVENTUD'] and doc.cats['VEJEZ'] > doc.cats['ADOLESCENCIA'] and doc.cats['VEJEZ'] > doc.cats['ETAPA ADULTA'] and doc.cats['VEJEZ'] > doc.cats['INDETERMINADO']:
         categories.append('vejez')
     else:
-        categories.append('indeterminado')
+        categories.append('indeterminado')'''
+
+    if doc.cats['INFANCIA'] > doc.cats['JUVENTUD'] and doc.cats['INFANCIA'] > doc.cats['ETAPA ADULTA'] and doc.cats['INFANCIA'] > doc.cats['VEJEZ']:
+        categories.append('infancia')
+    elif doc.cats['JUVENTUD'] > doc.cats['INFANCIA'] and doc.cats['JUVENTUD'] > doc.cats['ETAPA ADULTA'] and doc.cats['JUVENTUD'] > doc.cats['VEJEZ']:
+        categories.append('juventud')
+    elif doc.cats['ETAPA ADULTA'] > doc.cats['INFANCIA'] and doc.cats['ETAPA ADULTA'] > doc.cats['JUVENTUD'] and doc.cats['ETAPA ADULTA'] > doc.cats['VEJEZ']:
+        categories.append('etapa adulta')
+    elif doc.cats['VEJEZ'] > doc.cats['INFANCIA'] and doc.cats['VEJEZ'] > doc.cats['JUVENTUD'] and doc.cats['VEJEZ'] > doc.cats['ETAPA ADULTA']:
+        categories.append('vejez')
 
 
 
@@ -94,4 +103,12 @@ def clasificar_etapas(text):
     return categories
 
 #clasificar_etapas("Cuando era pequeño me encantaba la pizza")
+
+'''clasificar_etapas("Mi mejor recuerdo es el del nacimiento de mi hijo")
+clasificar_etapas("Me dolió muchísimo cuando me rompí una pierna a los 22 años")
+clasificar_etapas("Mi hermano y yo nos pasabamos las tardes haciendo puzzles")
+clasificar_etapas("Durante la infancia estuvimos viviendo en Moratalaz")
+clasificar_etapas("Mi pareja sufrió depresión después del parto")
+clasificar_etapas("Mi tía siempre se dedicó a la pintura")
+clasificar_etapas("Cuando estudiaba primero BUP teníamos tres gatos")'''
 
