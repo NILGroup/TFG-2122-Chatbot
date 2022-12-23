@@ -1,0 +1,84 @@
+{% extends "base_template.html" %}
+{% block title %}Pacientes Ricorda{% endblock %}
+{% block content %}
+
+<div class="content">
+  <div id="content" class="">      
+    <h1>Pacientes</h1>    
+
+      <!--<a href="{{ url_for('new_patient') }}" class="viewsitelink">
+        Nuevo paciente
+      </a>-->
+      <ul class="object-tools">
+        <li>
+          <a href="{{ url_for('new_patient') }}" class="viewsitelink">
+            Nuevo paciente
+          </a>
+        </li>      
+      </ul>
+        
+    <div id="content-main">
+
+      <div class="module" id="changelist">
+        <div class="changelist-form-container">
+            
+
+
+          {% if patients %}              
+
+                          
+            <div class="results">
+              <table id="result_list">
+                <thead>
+                  <tr>
+                    
+                    <th scope="col" class="column-__str__">
+
+                      <div class="text"><span>Nombre</span></div>
+                      <div class="clear"></div>
+                    </th>
+
+                    <th scope="col" class="column-__str__">
+
+                      <div class="text"><span>Email</span></div>
+                      <div class="clear"></div>
+                    </th>
+
+                  </tr>
+
+                </thead>
+                <tbody>
+
+                  {% for patient in patients %}
+                    <tr>
+
+                      <th class="field-__str__">
+                        <a href="{{ url_for('patient_info', user_id=patient.id) }}"> {{ patient.name }}</a>
+                      </th>
+
+                      <th class="field-__str__">
+                        {{ patient.email }}
+                      </th>
+
+                  {% endfor %}
+                
+                </tbody>
+              </table>
+            </div>
+
+          {% else %}
+            <p class="paginator">No tienes pacientes todavía</p>
+          {% endif %}
+                
+
+        </div>
+
+      </div>
+    </div>
+  
+    <br class="clear">
+  </div>
+</div>
+
+
+{% endblock %}
