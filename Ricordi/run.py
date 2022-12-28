@@ -82,7 +82,7 @@ def show_signup_form():
                     user.save()
                     user = User.get_by_email(email)
                     if type == 'paciente' and therapy is not None:
-                        therapy = Therapy(id="", therapist=therapy.therapist, patient=user.id, code=code)
+                        therapy = Therapy(id="", therapist=therapy.therapist, patient=user.id, code=code, user="")
                         therapy.save()
                     # Dejamos al usuario logueado
                     login_user(user, True)
