@@ -1,12 +1,12 @@
 \chapter{Aplicación Web}
 \label{cap:aplicacionWeb}
 
-La aplicación web se ha creado con el objetivo de proporcionar funcionalidades tanto para los posibles terapeutas como para sus posibles pacientes. Por un lado, el chatbot se ha pensado para que lo usen los pacientes y es el foco principal de este TFG y, donde se han aplicado todas las técnicas que se han tratado en las secciones anteriores. La aplicación web permite probar el chatbot de forma mucho más manejable y visible que desde un terminal del entorno de desarrollo. Por otro lado, se ha querido añadir las funcionalidades para los supuestos terapeutas que, podrían acceder a los recuerdos de sus pacientes de forma sencilla y visual.
+La aplicación web se ha creado con el objetivo de proporcionar una interfaz web atractiva y manejable tanto para los terapeutas como para sus pacientes. Ahora bien, el chatbot es la esencia de este TFG y, por tanto, es la herramienta principal que se desarrolla en la página web. El chatbot se ha pensado para ser utilizado por los pacientes. La aplicación web permite probar el chatbot de forma mucho más manejable y visible que desde un terminal del entorno de desarrollo. Además, se ha querido añadir más funcionalidades para los terapeutas que, podrán acceder a los recuerdos de sus pacientes de forma sencilla y visual. En este capítulo se explicarán los pasos que se han seguido para desarrollar la página web desde el principio con un prototipo inicial a mano alzada hasta el final con una aplicación web funcional y con numerables vistas. 
 
 
 \section{Prototipo inicial}
 
-Al inicio de este trabajo, había que ver qué dirección se iba a seguir, en esos momentos yo planteaba a mis tutores diferentes ideas que se me iban ocurriendo y ellos me guiaban por la propuesta más adecuada. Una de las ideas que se propusieron era la de este prototipo de aplicación web inicial. Realicé un esbozo sobre lo que creía que iba a necesitar el chatbot como aplicación para estar completo. Este prototipo a mano alzada está dividido en dos partes. Por un lado, están las funcionalidades pensadas para el uso del terapeuta, que podrá programar las sesiones que quiere hacer personalmente con el paciente (ver Figuras \ref{fig:diseñoinicialappterapeuta1}, \ref{fig:diseñoinicialappterapeuta2}, \ref{fig:diseñoinicialappterapeuta3}, \ref{fig:diseñoinicialappterapeuta4}, \ref{fig:diseñoinicialappterapeuta5}). Por otro lado, están las funcionalidades pensadas para el paciente con demencia (ver Figura \ref{fig:diseñoinicialappusuario}) y que hará uso del chatbot en sí. Es importante aclarar que el terapeuta tiene sus sesiones con el paciente como se hace habitualmente y las funcionalidades que tiene disponibles en la aplicación son para ayudarle a programar esas sesiones. El chatbot es solo accesible desde la cuenta de un paciente porque es una herramienta de apoyo para el terapeuta para facilitar la recolección de recuerdos del paciente y, conseguir la información de otra forma para así ganar tiempo.
+Al comienzo de este trabajo, había que ver qué dirección se iba a seguir y por ello, se plantearon diferentes propuestas para luego ser guiada por la más adecuada. Una de las ideas iniciales que se propusieron fue la de crear una aplicación web. Se realizó un esbozo sobre lo que se creía que iba a necesitar un chatbot como aplicación para estar completo. Este prototipo a mano alzada está dividido en dos partes. Por un lado, están las funcionalidades pensadas para el uso del terapeuta, que podrá programar las sesiones que quiere hacer personalmente con el paciente (ver Figuras \ref{fig:diseñoinicialappterapeuta1}, \ref{fig:diseñoinicialappterapeuta2}, \ref{fig:diseñoinicialappterapeuta3}, \ref{fig:diseñoinicialappterapeuta4}, \ref{fig:diseñoinicialappterapeuta5}). Por otro lado, las funcionalidades que están pensadas para el paciente con demencia (ver Figura \ref{fig:diseñoinicialappusuario}) y que hará uso del chatbot en sí. Es importante aclarar que no se planteó como sustituto de las sesiones que tienen los terapeutas con sus  pacientes y que las funcionalidades que tiene disponibles en la aplicación son para ayudarle a programar esas sesiones. El chatbot debe estar accesible desde la cuenta de un paciente para facilitar la tarea del terapeuta en la recopilación de sus recuerdos.
 
 Para el usuario con demencia el prototipo es muy sencillo, tiene 2 funcionalidades básicas propias (ver Figura \ref{fig:diseñoinicialappusuario}):
 
@@ -31,9 +31,9 @@ En cuanto a las vistas del terapeuta, tendrá muchas más funcionalidades dispon
 	\label{fig:diseñoinicialappterapeuta1}
 \end{figure}
 
-Ver Figura \ref{fig:diseñoinicialappterapeuta1} $\rightarrow$
+
 \begin{itemize}
-	\item Pacientes: Se muestra una lista de los usuarios (pacientes) que tiene el terapeuta asignados y que están registrados en la aplicación. 
+	\item Pacientes: Se muestra una lista de los usuarios (pacientes) que tiene el terapeuta asignados y que están registrados en la aplicación (ver Figura \ref{fig:diseñoinicialappterapeuta1}). 
 \end{itemize}
 
 \begin{figure}[h]
@@ -43,10 +43,10 @@ Ver Figura \ref{fig:diseñoinicialappterapeuta1} $\rightarrow$
 	\label{fig:diseñoinicialappterapeuta2}
 \end{figure}
 
-Ver Figura \ref{fig:diseñoinicialappterapeuta2} $\rightarrow$
+
 \begin{itemize}
-	\item Datos personales del paciente: Los datos personales y clínicos del paciente estarán disponibles para que el terapeuta los consulte cuando quiera.
-	\item Terapias del paciente: Se muestran las terapias que se han creado para ese paciente, tanto las que se programaron para fechas pasadas como las que ocurrirán próximamente. El terapeuta es el que crea estas terapias para sus futuras sesiones con el paciente, las terapias pasadas son las sesiones que se han finalizado y las próximas son las que están pendientes por hacer.
+	\item Datos personales del paciente: Los datos personales y clínicos del paciente estarán disponibles para que el terapeuta los consulte cuando quiera (ver Figura \ref{fig:diseñoinicialappterapeuta2}).
+	\item Terapias del paciente: Se muestran las terapias que se han creado para ese paciente, tanto las que se programaron para fechas pasadas como las que ocurrirán próximamente (ver Figura \ref{fig:diseñoinicialappterapeuta2}). El terapeuta es el que crea estas terapias para sus futuras sesiones con el paciente, las terapias pasadas son las sesiones que se han finalizado y las próximas son las que están pendientes por hacer.
 \end{itemize}
 
 \begin{figure}[h]
@@ -56,9 +56,9 @@ Ver Figura \ref{fig:diseñoinicialappterapeuta2} $\rightarrow$
 	\label{fig:diseñoinicialappterapeuta3}
 \end{figure}
 
-Ver Figura \ref{fig:diseñoinicialappterapeuta3} $\rightarrow$
+
 \begin{itemize}
-	\item Historia de vida del paciente: Los recuerdos recabados en las sesiones terapéuticas se guardan en la aplicación y el terapeuta puede consultarlos divididos por etapas de la vida (infancia, adolescencia, etapa adulta, etc.) igual que podía hacer el usuario. El objetivo de que el terapeuta pueda consultarlos es para revisar que se han grabado los recuerdos correctamente y para comprobar que son precisos y coherentes. En cualquier caso, el terapeuta podrá editar o borrar los recuerdos que crea incompletos o incorrectos y podrá también añadir recuerdos que haya conseguido de alguna otra forma. En caso de que algún recuerdo esté mal clasificado en la etapa de la vida en que ocurrió, también se podría mover a su sitio correcto.
+	\item Historia de vida del paciente: Los recuerdos recabados en las sesiones terapéuticas se guardan en la aplicación y el terapeuta puede consultarlos divididos por etapas de la vida (infancia, adolescencia, etapa adulta, etc.) igual que podía hacer el usuario (ver Figura \ref{fig:diseñoinicialappterapeuta3}). El objetivo de que el terapeuta pueda consultarlos es para revisar que se han grabado los recuerdos correctamente y para comprobar que son precisos y coherentes. En cualquier caso, el terapeuta podrá editar o borrar los recuerdos que crea incompletos o incorrectos y podrá también añadir recuerdos que haya conseguido de alguna otra forma. En caso de que algún recuerdo esté mal clasificado en la etapa de la vida en que ocurrió, también se podría mover a su sitio correcto.
 \end{itemize}
 
 \begin{figure}[h]
@@ -68,11 +68,11 @@ Ver Figura \ref{fig:diseñoinicialappterapeuta3} $\rightarrow$
 	\label{fig:diseñoinicialappterapeuta4}
 \end{figure}
 
-Ver Figura \ref{fig:diseñoinicialappterapeuta4} $\rightarrow$
+
 \begin{itemize}
-	\item Terapias: Se muestra una lista ordenada de las terapias que ha ido creando el terapeuta para los distintos pacientes.
-	\item Consultar terapia: El terapeuta puede revisar una terapia que haya sido ya planificada. También puede editarla o iniciar la terapia cuando esté con el paciente. 
-	\item Nueva terapia: Para crear/programar una nueva terapia es necesario asignarle un nombre, el paciente al que va dirigida y una fecha en la que se llevará a cabo. El paciente se puede elegir de entre los usuarios que tiene asignados el terapeuta pero, también puede crear un nuevo usuario al que irá dirigida que no es necesario que esté registrado en la aplicación. Después, se crean por cada bloque las preguntas o temas que se quieren sacar en la sesión en el orden que quieran ser utilizados.
+	\item Terapias: Se muestra una lista ordenada de las terapias que ha ido creando el terapeuta para los distintos pacientes (ver Figura \ref{fig:diseñoinicialappterapeuta4}).
+	\item Consultar terapia: El terapeuta puede revisar una terapia que haya sido ya planificada (ver Figura \ref{fig:diseñoinicialappterapeuta4}). También puede editarla o iniciar la terapia cuando esté con el paciente. 
+	\item Nueva terapia: Para crear/programar una nueva terapia es necesario asignarle un nombre, el paciente al que va dirigida y una fecha en la que se llevará a cabo (ver Figura \ref{fig:diseñoinicialappterapeuta4}). El paciente se puede elegir de entre los usuarios que tiene asignados el terapeuta pero, también puede crear un nuevo usuario al que irá dirigida que no es necesario que esté registrado en la aplicación. Después, se crean por cada bloque las preguntas o temas que se quieren sacar en la sesión en el orden que quieran ser utilizados.
 \end{itemize}
 
 \begin{figure}[h]
@@ -82,15 +82,15 @@ Ver Figura \ref{fig:diseñoinicialappterapeuta4} $\rightarrow$
 	\label{fig:diseñoinicialappterapeuta5}
 \end{figure}
 
-Ver Figura \ref{fig:diseñoinicialappterapeuta5} $\rightarrow$
+
 \begin{itemize}
-	\item Terapia finalizada: Se puede consultar una terapia que ya se ha realizado. Se podrá ver toda la información que se ha sacado, apuntes del terapeuta, la grabación de la sesión, la transcripción de la grabación, etc.
-	\item Iniciar terapia: Cuando el terapeuta se reúne con el paciente para la sesión, pulsa a iniciar la terapia y obtendrá en orden los temas y preguntas que le quiere ir sacando al paciente. Podrá ir pasando de pregunta en pregunta cuando lo crea necesario. Al comenzar, puede poner a grabar la sesión para que luego se haga una transcripción automática de todo lo que ambos dicen. Esa grabación se puede pausar o continuar cuando se quiera También, se puede añadir una sección nueva que no se contemplase en la planificación pero que se quiera incluir en la terapia. Y finalmente, se puede terminar dar por finalizada la terapia pulsando en terminar. 
+	\item Terapia finalizada: Se puede consultar una terapia que ya se ha realizado (ver Figura \ref{fig:diseñoinicialappterapeuta5}). Se podrá ver toda la información que se ha sacado, apuntes del terapeuta, la grabación de la sesión, la transcripción de la grabación, etc.
+	\item Iniciar terapia: Cuando el terapeuta se reúne con el paciente para la sesión, pulsa a iniciar la terapia y obtendrá en orden los temas y preguntas que le quiere ir sacando al paciente (ver Figura \ref{fig:diseñoinicialappterapeuta5}). Podrá ir pasando de pregunta en pregunta cuando lo crea necesario. Al comenzar, puede poner a grabar la sesión para que luego se haga una transcripción automática de todo lo que ambos dicen. Esa grabación se puede pausar o continuar cuando se quiera También, se puede añadir una sección nueva que no se contemplase en la planificación pero que se quiera incluir en la terapia. Y finalmente, se puede terminar dar por finalizada la terapia pulsando en terminar. 
 \end{itemize}
 
 Este prototipo se descartó porque se centraba mucho en hacer una aplicación web y no tanto en el desarrollo de un chatbot lo suficientemente inteligente para dirigir una sesión de terapia sin necesidad del terapeuta. Con esto, no se desestima la labor del terapeuta que siempre tendría que comprobar que la información recabada por el chatbot es veraz y utilizar esa información para ayudar al usuario con una terapia cara a cara con el usuario. El chatbot es solo una herramienta de apoyo para facilitar el trabajo del terapeuta en conseguir los recuerdos de la vida del usuario. 
 
-Por otro lado, en junio de 2022 se presetó el TFG ``Recuérdame: Aplicación de apoyo para el tratamiento de personas con problemas de memoria mediante terapias basadas en reminiscencia'', que precisamente se encarga del desarrollo de una aplicación web completa para facilitar la tarea del terapeuta que tiene que ayudar a usuarios con demencia a través de la terapia ocupacional basada en reminiscencia. Es decir, no tenía sentido que yo desarrollase una aplicación web para usuario y terapeuta porque ya se estaba desarrollando una cosa muy parecida en otro trabajo de fin de grado. Es por eso que la recomendación de mis tutores de centrarme en el desarrollo del chatbot fue la acertada. Aun así, sí que se ha desarrollado una pequeña aplicación web para mostrar de forma más visual la funcionalidad del chatbot. El diseño y la implementación de la misma se explicarán en las siguientes secciones.
+%Por otro lado, en junio de 2022 se presentó el TFG ``Recuérdame: Aplicación de apoyo para el tratamiento de personas con problemas de memoria mediante terapias basadas en reminiscencia'', que precisamente se encarga del desarrollo de una aplicación web completa para facilitar la tarea del terapeuta que tiene que ayudar a usuarios con demencia a través de la terapia ocupacional basada en reminiscencia. Es decir, no era necesario desarrollar una aplicación web para usuario y terapeuta porque ya se estaba desarrollando una cosa muy parecida en otro trabajo de fin de grado. Es por eso que la recomendación de mis tutores de centrarme en el desarrollo del chatbot fue la acertada. Aun así, sí que se ha desarrollado una pequeña aplicación web para mostrar de forma más visual la funcionalidad del chatbot. El diseño y la implementación de la misma se explicarán en las siguientes secciones.
 
 
 \section{Base de datos}
@@ -221,9 +221,7 @@ En primer lugar, el bot saluda al usuario, le da la bienvenida y explica que com
 	\label{fig:funcionalidadchatbot}
 \end{figure}
 
------------------------ Estilo \footnote{https://buffml.com/web-based-chatbot-using-flask-api/}
-
-
+El diseño de esta vista esta inspirado en el Chatbot web de la página sobre inteligencia artificial ``Buff ML'' \footnote{https://buffml.com/web-based-chatbot-using-flask-api/}
 
 \subsection{Funcionalidad usuario terapeuta vs usuario paciente}
 
