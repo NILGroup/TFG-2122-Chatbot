@@ -93,11 +93,9 @@ Este prototipo se descartó porque se centraba mucho en hacer una aplicación we
 %Por otro lado, en junio de 2022 se presentó el TFG ``Recuérdame: Aplicación de apoyo para el tratamiento de personas con problemas de memoria mediante terapias basadas en reminiscencia'', que precisamente se encarga del desarrollo de una aplicación web completa para facilitar la tarea del terapeuta que tiene que ayudar a usuarios con demencia a través de la terapia ocupacional basada en reminiscencia. Es decir, no era necesario desarrollar una aplicación web para usuario y terapeuta porque ya se estaba desarrollando una cosa muy parecida en otro trabajo de fin de grado. Es por eso que la recomendación de mis tutores de centrarme en el desarrollo del chatbot fue la acertada. Aun así, sí que se ha desarrollado una pequeña aplicación web para mostrar de forma más visual la funcionalidad del chatbot. El diseño y la implementación de la misma se explicarán en las siguientes secciones.
 
 
-\section{Base de datos}
+\section{Base de datos MySQL}
 
-Se han usado dos tipos de bases de datos en el proyecto. La primera es no relacional levantada en MongoDB, explicada en el capítulo anterior, que almacena los datos relacionados con los recuerdos de la persona con demencia y de la interacción con el chatbot. La segunda base de datos es relacional y se ha creado en MySQL. Esta segunda se encarga de almacenar los datos de los usuario para poder ser identificados e iniciar sesión y los datos de las terapias para relacionar pacientes con terapeutas. A continuación se procede a explicar la segunda base de datos, la MySQL, cuyo uso es exclusivo de la página web. 
-
-\subsection{MySQL}
+Se han usado dos tipos de bases de datos en el proyecto. La primera es no relacional levantada en MongoDB, explicada en el capítulo anterior, que almacena los datos relacionados con los recuerdos de la persona con demencia y de la interacción con el chatbot. La segunda base de datos es relacional y se ha creado en MySQL. Esta segunda se encarga de almacenar los datos de los usuarios para poder ser identificados e iniciar sesión. Y, por otro lado, almacena los datos de las terapias para relacionar pacientes con terapeutas. A continuación se procede a explicar la segunda base de datos, la MySQL, cuyo uso es exclusivo de la página web. 
 
 Se trata de una base de datos ideal para conjuntos de datos que tienen una estructura fija, como en este caso, los datos de inicio de sesión de los usuarios y los datos de las terapias que asocian a los terapeutas con sus pacientes. Es por esto que se ha construido una base de datos con dos tablas fijas y relacionadas, una que identifica a los usuarios y otra que guarda la información sobre las terapias. En la diagrama de entidad-relación de la figura \ref{fig:diagramaEER} se puede ver la relación entre ambas tablas. Se trata de una relación recursiva ya que la tabla de usuarios se relaciona consigo misma de tal forma que la tabla desempeña un rol de terapeuta en uno de los lados de la relación y un rol de paciente en el otro lado. La tabla de terapias solo cumple la función de intermediaria y en ella se tratan dos tipos de usuarios, terapeutas y pacientes.
 
@@ -284,15 +282,14 @@ Cuando el paciente se registre en la aplicación, en el campo de id del paciente
 \end{figure}
 
 
-
-\subsection{Funcionalidad historia de vida de un paciente}
+\subsection{Funcionalidad recopilación de los recuerdos de un paciente}
 
 Los recuerdos que se van almacenando para cada usuario en la base de datos se van a poder consultar en esta vista (ver Figura \ref{fig:funcionalidadhistoriavida}). La historia de vida de una persona se va construyendo desde su infancia hasta los últimos años de vida. Esta progresión es lo que pretende reflejar esta funcionalidad. Empezando con la infancia y terminando por la vejez, se muestran los recuerdos del usuario clasificados en cuatro etapas: infancia, juventud, etapa adulta y vejez. Esta categorización se obtiene de la base de datos de Mongo, en concreto de la tabla de respuestas que da el usuario al chatbot. Antes de ser almacenados en la base de datos, los recuerdos se analizan con el clasificador de etapas y sentimientos (explicado en el capítulo de arquitectura del chatbot) y, luego, se guardan junto a las categorías. En esta vista, para cada etapa se enumeran los recuerdos (respuestas al chatbot) correspondientes junto a la pregunta que se le hizo al usuario. Si alguna de las cuatro etapas no tiene recuerdos asociados, no se muestra el apartado. 
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.3]{Imagenes/Vectorial/funcionalidad_historia_vida}
-	\caption{Funcionalidad crear nuevo paciente}
+	\includegraphics[scale=0.6]{Imagenes/Vectorial/funcionalidad_historia_vida}
+	\caption{Funcionalidad recopilación de recuerdos del paciente}
 	\label{fig:funcionalidadhistoriavida}
 \end{figure}
 

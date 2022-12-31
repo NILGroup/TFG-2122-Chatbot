@@ -237,3 +237,47 @@ def new_patient():
 # Si mongodb da ECONNREFUSED 127.0.0.1:27017 -> problema de no espacio en sdxc o ir a servicios, buscar el de mongo y darle a iniciar
 # https://www.youtube.com/watch?v=W0tvOEdjQ6Y
 # https://bobcares.com/blog/mongodb-error-1067/
+
+# Para latex.bib Ejecutar desde TFMTexis.tex en herramientas, Bibliiografía (F8), hay que ejecutarlo dos veces y luego runear el latex normal
+
+'''@Book{rrss,
+	title =	 {Extracción de información personal a partir de redes sociales para la creación de un libro de vida},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/68328/},
+}
+
+@Book{preguntas,
+	title =	 {Extracción de preguntas a partir de imágenes para personas con problemas de memoria mediante técnicas de Deep Learning},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/66857/},
+}
+
+@Book{asistencia,
+	title =	 {Sistema de asistencia para cuidados de enfermos del Alzheimer},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/67069/},
+}
+
+@Book{resumen,
+	title =	 {Generación de resúmenes de video-entrevistas utilizando redes neuronales},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/68333/},
+}
+
+@Book{reminiscencia,
+	title =	 {Generación de historias a partir de una base de conocimiento (Herramienta de ayuda guiada para la reminiscencia)},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/68332/},
+}
+
+@Book{app,
+	title =	 {Recuérdame: Aplicación de apoyo para el tratamiento de personas con problema de memoria mediante terapias basadas en reminiscencia},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/74515/},
+}
+
+@Book{videos,
+	title =	 {Extracción de recuerdos de vídeos de entrevistas con personas con problemas de memoria},
+	publisher = 	 {Versión electrónica},
+	webpage = {https://eprints.ucm.es/id/eprint/75068/},
+}'''
