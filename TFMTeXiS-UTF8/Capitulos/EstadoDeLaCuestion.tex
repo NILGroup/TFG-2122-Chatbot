@@ -1,7 +1,7 @@
 \chapter{Estado de la Cuestión}
 \label{cap:estadoDeLaCuestion}
 
-Introducción de lo que voy a hablar en el estado de la cuestión y por qué
+En este capítulo se introducen las diferentes temáticas relacionadas con el trabajo desarrollado. Se presenta el concepto de demencia y cómo ralentizar el deterioro de las personas que la padecen mediante terapias de reminiscencia. También se explican los diferentes trabajos previos que se han ido desarrollando en el marco del proyecto CANTOR y que están relacionados con este TFG. Entrando en detalles más técnicos, se explica la importancia del Procesamiento del lenguaje natural de cara al desarrollo de tecnologías que comprendan a los humanos y, también se da a conocer el contexto de los Chatbots y cómo implementarlos.
 
 
 \section{Demencia}
@@ -23,14 +23,14 @@ Este trabajo está enmarcado en el proyecto CANTOR \footnote{https://www.ucm.es/
 Dentro de este contexto de trabajo, se han llevado a cabo diferentes proyectos por parte de antiguos alumnos de la Facultad de Informática enfocados a desarrollar distintas partes del proyecto CANTOR. Algunos de los relacionados con este TFG se cuentan a continuación: 
 
 \begin{enumerate}
-	\item Generación de historias a partir de una base de conocimiento, herramienta de ayuda guiada para la reminiscencia de \cite{lcastilla}: recomendación de temas a tratar en la terapia + aplicación web que enlaza situaciones y vivencias mediante grafos y luego permite añadir recursos fotográficos asociado a un tema. (Más como un chatbot que va sugiriendo temas a tratar)
-	\item Recuérdame: Aplicación de apoyo para el tratamiento de personas con problema de memoria mediante terapias basadas en reminiscencia de \cite{cbarquilla}:  .
-	\item Generación de historias de vida usando técnicas de Deep Learning de \cite{calameda}
-	\item Sistema de asistencia para cuidados de enfermos del Alzheimer de \cite{dbedinger} : Página que guarda información sobre pacientes y terapeutas asociados. Información relevante + historia de vida formada por instancias de recuerdos
-	\item Extracción de información personal a partir de redes sociales para la creación de un libro de vida de \cite{paguilera}
-	\item Extracción de preguntas a partir de imágenes para personas con problemas de memoria mediante técnicas de Deep Learning de \cite{aaizel} : chat desplegado con telegram. De las fotos que tiene archivadas va preguntando al usuario cosas relacionadas con la imagen
-	\item Generación de resúmenes de video-entrevistas utilizando redes neuronales de \cite{dalcazar} : transcripción de video-entrevistas a texto
-	\item Extracción de recuerdos de vídeos de entrevistas con personas con problemas de memoria de \cite{hgarcia}
+	\item Generación de historias a partir de una base de conocimiento de \cite{lcastilla}: Aplicación para usar en entrevistas con personas con demencia que sugiere temas de los que hablar y con los que poder recordar más fácilmente. Permite ir apuntando las ideas más importantes sobre cada tema tratado. La información recopilada se puede visualizar en forma de grafos o diccionarios porque la herramienta se encarga de ir enlazando los recuerdos que se van sacando. Además permite añadir, asociado a un tema, estímulos que ayuden a recordar al usuario, como recursos fotográficos. 
+	\item Recuérdame, aplicación de apoyo para el tratamiento de personas con problema de memoria mediante terapias basadas en reminiscencia de \cite{cbarquilla}: Aplicación web dirigida a los terapeutas encargados de tratar a personas con demencia. Es una herramienta de ayuda a la hora de planificar las sesiones. Se usa también como almacén de recuerdos de los pacientes que luego también pueden consultar la historia de vida que se ha ido construyendo. 
+	\item Generación de historias de vida usando técnicas de Deep Learning de \cite{calameda}: Desarrollo de un sistema capaz de redactar las historias de vida de las personas a partir de sus recuerdos estructurados. 
+	\item Sistema de asistencia para cuidados de enfermos del Alzheimer de \cite{dbedinger}: Aplicación que guarda la información sobre los terapeutas y sus pacientes. Con ella se recogen los recuerdos del paciente. La información recopilada más relevante se utiliza para generar la historia de vida de la persona en forma de narración. 
+	\item Extracción de información personal a partir de redes sociales para la creación de un libro de vida de \cite{paguilera}: Interfaz web donde se podrán consultar datos recopilados sobre personas con demencia en forma de historia de vida. Alimentando a la aplicación se encuentra un programa que se encarga de extraer la información del paciente de sus redes sociales de forma automática.
+	\item Extracción de preguntas a partir de imágenes para personas con problemas de memoria mediante técnicas de Deep Learning de \cite{aaizel} : Se trata de una terapia en forma de chat con un bot de Telegram. El usuario se encarga de enviar fotos que puedan representar recuerdos suyos a la aplicación y la aplicación extrae de esas fotos preguntas relacionadas que puedan ayudar a la persona con demencia a recordar con más detalle lo relacionado con esa foto. 
+	\item Generación de resúmenes de vídeo-entrevistas utilizando redes neuronales de \cite{dalcazar}: Aplicación web que utiliza redes neuronales para transcribir entrevistas en vídeo de personas con demencia y generar el resumen en español.
+	\item Extracción de recuerdos de vídeos de entrevistas con personas con problemas de memoria de \cite{hgarcia}: Herramienta capaz de crear transcripciones automáticas de entrevistas a personas con demencia en vídeo. Además, extrae la información importante de forma estructurada y la presenta en forma de grafo. 
 \end{enumerate}
 
 \section{Procesamiento del lenguaje natural}
@@ -71,7 +71,7 @@ Algunas de las aplicaciones \footnote{https://www.iic.uam.es/procesamiento-del-l
 	\item \textbf{Traducción automática de textos}: A día de hoy el nivel de traducción es bastante razonable. Existe la posibilidad de traducir textos largos a distintos idiomas. Es más, existen algunos navegadores que traducen automáticamente páginas web de un idioma a otro como por ejemplo ``Google Chrome''. Las traducciones suelen ser más fiables para ciertas parejas de idiomas. El inglés suele ser uno de los idiomas más desarrollados en este campo por ser de los más usados en el mundo. Por otro lado, aun no está muy conseguida la traducción de documentos complejos o de aquellos con muchos matices, ni siquiera de un idioma principal a otro. Para dichos textos seguirá siendo necesaria la intervención de un humano.
 	\item \textbf{Sistemas conversacionales con PLN}: Son tecnologías de tipo Chatbot como Siri de Apple o el Asistente de Google. Son aplicaciones que entablan pequeñas conversaciones con el usuario y resuelven sus dudas, aunque a veces no con mucho éxito todavía. Se amplia la información en la sección \ref{chatbot}.
 	\item \textbf{Respuestas automáticas a preguntas}: El primero que se hizo famoso fue el sistema Watson, desarrollado por IBM. Ganó algunos concursos televisivos contra humanos por su capacidad de responder todo tipo de preguntas gracias al amplio conocimiento que almacena en su base de datos.
-	\item \textbf{Análisis de sentimiento}: Se trata de analizar opiniones sobre personas, productos y temas varios. Su uso más destacable es en el ámbito de las redes sociales para analizar cómo interactúan los usuarios. Se amplia la información en la sección \ref{sentiment}.
+	\item \textbf{Análisis de sentimiento}\footnote{https://www.datacamp.com/tutorial/text-analytics-beginners-nltk}: Se trata de analizar opiniones sobre personas, productos y temas varios. Su uso más destacable es en el ámbito de las redes sociales para analizar cómo interactúan los usuarios. Se amplia la información en la sección \ref{sentiment}.
 	\item \textbf{Resúmenes de textos automáticos}: A día de hoy existe muchísima  información en Internet y muchos textos quedan sin leer por falta de tiempo. Los resúmenes automáticos ayudan a determinar si un texto merece ser leído al completo. 
 	\item \textbf{Clasificación de documentos por categorías}: Ayuda a dirigir la información contenida en dichos documentos a los usuarios interesados, ahorrando tiempo. 
 \end{enumerate}
@@ -137,7 +137,7 @@ Algunas de las herramientas \footnote{https://www.mdirector.com/blog/las-7-mejor
 	\item Botsify: Dotado de una inteligencia artificial muy refinada. Permite conectarse con muchas plataformas a través de plugins. 
 	\item Telegram Bots: Pensado para crear chatbots desde la plataforma de mensajería de Telegram. También permite la integración con bots externos.
 	\item Chatfuel: Pensada para cualquier usuario sin necesidad de conocimientos técnicos. Permite automatizar las respuestas a preguntas frecuentes y establecer reglas de mesnajes automáticos.
-	\item AIML: Es un lenguaje de marcado, es decir, formado por etiquetas o marcas como HTML. Se basa en la búsqueda de patrones para la creación de bots conversacionales llamados ``Alicebots''
-	\item Python: Creación de chatbots mediante librerías como spaCy, Chatterbot o NLTK.
+	\item AIML: Es un lenguaje de marcado, es decir, formado por etiquetas o marcas como HTML. Se basa en la búsqueda de patrones para la creación de bots conversacionales llamados ``Alicebots'' \footnote{https://github.com/ezabou/ElisaBot}. 
+	\item Python \footnote{https://analyticsindiamag.com/top-python-libraries-for-chatbot-development/}: Creación de chatbots mediante librerías como spaCy \footnote{https://course.spacy.io/es}, Chatterbot o NLTK.
 \end{itemize} 
 
