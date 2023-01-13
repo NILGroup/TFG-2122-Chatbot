@@ -1,6 +1,36 @@
 \chapter{Conclusions and Future Work}
 \label{cap:conclusions}
 
-Conclusions and future lines of work.
+The aim of this TFG was to build a Chatbot intelligent enough to collect information about the life of a person with dementia and store it in a structured way. Although there is still a lot of work to be done on what has already been developed, a functional application has been built that serves as a relatively autonomous support tool in the hard task of writing a life story.
+
+Initially, the idea was to develop a conversational bot with which a sophisticated and coherent conversation could be held. As time went by, as we encountered numerous obstacles and saw the complexity of simulating a therapist's interview, the initial idea was distorted a little.In the end, a useful tool has been created because it fulfils the function of collecting the information provided by the user, although it is not as intelligent as initially proposed, especially when it comes to giving it the human touch. It lacks the capacity to help the person with dementia to remember through stimuli and a fluid conversation.
+
+In any case, a pretty precise analysis of the answers given by the user through the chat has been achieved. The tool manages to structure memories into the stages of the person's life to which they correspond in a fairly exact way, as happens with the sentiment analysis of the texts. Although a more concrete distinction could be made, especially in the case of memories that do not fall into any of the categories provided, it is left as a possible future work. The conversation is made more fluid by the answer and question chaining module that analyses the user's answer to find the best next question to ask. Further analysis of the context of the sentence would have greatly improved the choice of coherent and fluid questions.
+
+At the web application level, it is quite manageable and interactive, offering a user-friendly interface aimed at both patients and therapists. It offers control over the users and over the information that is collected. More functionalities have not been added because the focus should be the Chatbot and, in addition, there were already other works (TFGs) that focused on a more specific web development.
+
+In terms of future work, the following improvements are proposed:
+
+\begin{itemize}
+	\item More accurate and concrete sentiment analysis and life-stage classification.
+	\item A more fluid conversation with the user: apart from asking about their past, implement a conversational module that simply reacts to the answers, always according to what the person has said. Also include a program to complete the missing information about the user according to a template to be filled in.
+	\item Add some extra functionality to the web application such as defining specific therapies aimed at a specific topic. Other functionalities could be allowing the therapist to add questions to the battery available in the database, enabling a voice recognition option to make it much easier for the dementia patient to interact with the Chatbot, etc.
+	\item A better choice of the questions posed to the user: apart from comparing the answer given by the user to choose the next question, also compare with the question that was asked to which the user answered. For example, if a question has been asked about something related to childhood, keep asking about things related to childhood. Ontologies can also be implemented so that when analysing the answers, words or concepts can be related to new possible questions to be asked.
+	\item Expand the battery of questions and topics to be addressed by adapting the standard interviews conducted by occupational therapists.
+	\item Create the possibility that questions can be generated on their own, without being previously drafted, according to the topic being dealt with and the data provided by the patient.
+	\item Greater categorisation of memories with labels such as family, friends, leisure, food, holidays, hobbies, etc.
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -146,9 +146,9 @@ Tabla en la que se guardan las relaciones entre terapeutas y sus pacientes. Por 
 
 \section{Implementación final}
 
-La aplicación final del chatbot, con la que el usuario con demencia interactuaría, se ha desarrollado usando el \textit{framework} de creación de aplicaciones ``Flask''. Se trata de un framework para la creación rápida de aplicaciones web desarrolladas con Python. Se estuvo planteando usar el framework ``Django'' pero finalmente se optó por Flask porque Django es para aplicaciones mucho más grandes y complejas de lo que se proponía crear para este trabajo. Flask es mucho más intuitivo y fácil de usar, además, con solo un par de líneas se puede levantar una aplicación web sin necesidad de librerías ni herramientas accesorias. Por otro lado, el diseño de la página web se ha desarrollado con hojas de estilos al uso, sin hacer uso de ningún framework para el frontend. Sin embargo, no se ha programado línea a línea sino que se ha replicado el estilo del sitio de administración \footnote{https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Admin\_site} que proporciona ``Django'' a todos los desarrolladores de aplicaciones web que utilicen su framework. Como se había trabajado anteriormente con ``Django'', se ha querido utilizar su diseño visual por ser conocido y porque el objetivo de la aplicación era mostrar la usabilidad del chatbot, no que fuera visualmente bonito. No se ha trabajado con estilos más elaborados y técnicos para invertir ese tiempo en el desarrollo con Python.
+La aplicación final del chatbot, con la que el usuario con demencia interactuaría, se ha desarrollado usando el \textit{framework} de creación de aplicaciones ``Flask''. Se trata de un framework para la creación rápida de aplicaciones web desarrolladas con Python. Se estuvo planteando usar el framework ``Django'' pero finalmente se optó por Flask porque Django es para aplicaciones mucho más grandes y complejas de lo que se proponía crear para este trabajo. Flask es mucho más intuitivo y fácil de usar, además, con solo un par de líneas se puede levantar una aplicación web sin necesidad de librerías ni herramientas accesorias. Por otro lado, el diseño de la página web se ha desarrollado con hojas de estilos al uso, sin hacer uso de ningún framework para el frontend. Sin embargo, no se ha programado línea a línea sino que se ha replicado el estilo del sitio de administración\footnote{https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Admin\_site} que proporciona ``Django'' a todos los desarrolladores de aplicaciones web que utilicen su framework. Como se había trabajado anteriormente con ``Django'', se ha querido utilizar su diseño visual por ser conocido y porque el objetivo de la aplicación era mostrar la usabilidad del chatbot, no que fuera visualmente bonito. No se ha trabajado con estilos más elaborados y técnicos para invertir ese tiempo en el desarrollo con Python.
 
-Para empezar con Flask, se utilizó la guía \footnote{https://flask.palletsprojects.com/en/2.2.x/quickstart/} proporcionada por la página oficial de este framework y un tutorial \footnote{https://j2logo.com/leccion-1-la-primera-aplicacion-flask/} específico para la creación de aplicaciones como esta. Para empezar con Flask lo principal es tener instalado Python e instalar las dependencias necesarias del framework. Esto se puede hacer desde el propio entorno de desarrollo elegido, en mi caso ``Visual Studio Code'', usando el instalador de paquetes ``pip'' de Python. El paquete principal para que la aplicación funcione es el de Flask, en este caso Flask-WTF para que también incluya la validación de formularios, como sería el de inicio de sesión en el que se profundizará más adelante.  
+Para empezar con Flask, se utilizó la guía\footnote{https://flask.palletsprojects.com/en/2.2.x/quickstart/} proporcionada por la página oficial de este framework y un tutorial\footnote{https://j2logo.com/leccion-1-la-primera-aplicacion-flask/} específico para la creación de aplicaciones como esta. Para empezar con Flask lo principal es tener instalado Python e instalar las dependencias necesarias del framework. Esto se puede hacer desde el propio entorno de desarrollo elegido, en mi caso ``Visual Studio Code'', usando el instalador de paquetes ``pip'' de Python. El paquete principal para que la aplicación funcione es el de Flask, en este caso Flask-WTF para que también incluya la validación de formularios, como sería el de inicio de sesión en el que se profundizará más adelante.  
 
 Una vez instalados los paquetes, el despliegue de la aplicación es muy sencillo y, tan solo se necesitan unas pocas líneas de código para que funcione. Lo primero sería crear un fichero python, en nuestro caso llamado ``run.py'', en el que irán los métodos asociados a las URLs que formarán la aplicación, el primer método en nuestro caso, sería el que nos lleva a la página principal, el ``index'', que es básico para que funcione la aplicación. El fichero run.py más básico para que se despliegue la aplicación quedaría de esta forma:
 
@@ -175,7 +175,7 @@ Una vez tenemos funcionando la aplicación ya solo queda ampliar sus funcionalid
 
 \subsection{Funcionalidad inicio de sesión y registro}
 
-Se añade esta funcionalidad para que cada recuerdo se pueda asociar a un usuario y así dar la posibilidad de guardar incontables historias de vida de diferentes usuarios. De la mano del inicio de sesión, se encuentra la funcionalidad del registro de usuarios que se contará también en esta sección de la memoria. De nuevo, para ambas funcionalidades, se ha utilizado como guía el tutorial de Flask \footnote{https://j2logo.com/tutorial-flask-leccion-3-formularios-wtforms/} de la página ``J2logo''. En este caso, la página web nos guía en el uso de formularios en Flask, que se requieren tanto para el inicio de sesión como para el registro de usuarios. 
+Se añade esta funcionalidad para que cada recuerdo se pueda asociar a un usuario y así dar la posibilidad de guardar incontables historias de vida de diferentes usuarios. De la mano del inicio de sesión, se encuentra la funcionalidad del registro de usuarios que se contará también en esta sección de la memoria. De nuevo, para ambas funcionalidades, se ha utilizado como guía el tutorial de Flask\footnote{https://j2logo.com/tutorial-flask-leccion-3-formularios-wtforms/} de la página ``J2logo''. En este caso, la página web nos guía en el uso de formularios en Flask, que se requieren tanto para el inicio de sesión como para el registro de usuarios. 
 
 %Los formularios que se necesiten para una aplicación de Flask es conveniente tenerlos separados en un archivo Pyhton aparte, en este caso en ``forms.py''. En este archivo se definirán las clases SignUpForm y LoginForm que heredan de la clase FlaskForm. Dentro de estas clases se definirán los atributos, variables que se corresponden con los campos a validar del formulario. La validación de los campos se hará automáticamente teniendo en cuenta el tipo de dato que se defina para cada atributo y también los parámetros opcionales que se definan para ese atributo. Por ejemplo, para el campo del email que se usa en ambos formularios se define el siguiente atributo:
 
@@ -219,7 +219,7 @@ En primer lugar, el bot saluda al usuario, le da la bienvenida y explica que com
 	\label{fig:funcionalidadchatbot}
 \end{figure}
 
-El diseño de esta vista esta inspirado en el Chatbot web de la página sobre inteligencia artificial ``Buff ML'' \footnote{https://buffml.com/web-based-chatbot-using-flask-api/}
+El diseño de esta vista esta inspirado en el Chatbot web de la página sobre inteligencia artificial ``Buff ML''\footnote{https://buffml.com/web-based-chatbot-using-flask-api/}
 
 \subsection{Funcionalidad usuario terapeuta vs usuario paciente}
 
@@ -230,14 +230,14 @@ Los usuarios pacientes podrán acceder a un menú concreto pensado para que pued
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=1.0]{Imagenes/Vectorial/funcionalidad_terapeutavspaciente2}
-	\caption{Funcionalidad consultar pacientes registrados}
+	\caption{Menú de los pacientes}
 	\label{fig:funcionalidad_terapeutavspaciente2}
 \end{figure}
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=1.0]{Imagenes/Vectorial/funcionalidad_terapeutavspaciente}
-	\caption{Funcionalidad consultar pacientes registrados}
+	\caption{Menú de los terapeutas}
 	\label{fig:funcionalidadterapeutavspacientes}
 \end{figure}
 
@@ -270,7 +270,7 @@ Cuando el paciente se registre en la aplicación, en el campo de id del paciente
  \begin{figure}[h]
  	\centering
  	\includegraphics[scale=1.6]{Imagenes/Vectorial/funcionalidad_nuevo_paciente_tabla_terapias}
- 	\caption{Funcionalidad crear nuevo paciente}
+ 	\caption{Tabla de terapias en MySQL}
  	\label{fig:funcionalidadnuevopacientetablaterapias}
  \end{figure}
 
