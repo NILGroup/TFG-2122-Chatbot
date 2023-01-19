@@ -20,21 +20,23 @@ def evaluate(tokenizer, textcat, texts, cats):
     tn = 0.0 # True negatives
     for i, doc in enumerate(textcat.pipe(docs)):
         gold = cats[i]
-    for label, score in doc.cats.items():
-        if label not in gold:
-            continue
-        if label == "NEGATIVE":
-            continue
-        if score >= 0.5 and gold[label] >= 0.5:
-            tp += 1.0
-        elif score >= 0.5 and gold[label] < 0.5:
-            fp += 1.0
-        elif score < 0.5 and gold[label] < 0.5:
-            tn += 1
-        elif score < 0.5 and gold[label] >= 0.5:
-            fn += 1
-            precision = tp / (tp + fp)
-            recall = tp / (tp + fn)
+        for label, score in doc.cats.items():
+            if label not in gold:
+                continue
+            if label == "NEGATIVE":
+                continue
+            if score >= 0.5 and gold[label] >= 0.5:
+                tp += 1.0
+            elif score >= 0.5 and gold[label] < 0.5:
+                fp += 1.0
+            elif score < 0.5 and gold[label] < 0.5:
+                tn += 1
+            elif score < 0.5 and gold[label] >= 0.5:
+                fn += 1
+                precision = tp / (tp + fp)
+                recall = tp / (tp + fn)
+        precision = tp / (tp + fp)
+        recall = tp / (tp + fn)
         if (precision + recall) == 0:
             f_score = 0.0
         else:

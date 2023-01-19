@@ -74,3 +74,11 @@ with nlp.disable_pipes(*other_pipes): # only train textcat
 test_text="I hate this dress"
 doc = nlp(test_text)
 print(doc.cats)
+
+print(nlp("My grandmother died in 1998").cats)
+print(nlp("My best memory is from my child's birth").cats)
+print(nlp("I am 23 years old").cats)
+print(nlp("It hurt very bad when I fractured my leg").cats)
+print(nlp("My brother and I spent our evenings making puzzles").cats)
+print(nlp("During my childhood we lived in London").cats)
+print(nlp("My girlfrind suffered depression after giving birth").cats)

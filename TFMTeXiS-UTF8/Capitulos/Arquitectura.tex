@@ -3,29 +3,62 @@
 
 Los sistemas de análisis automático de texto tienen como objetivo entender la información no estructurada hablada por los humanos y convertirla en información estructurada como podría ser un resumen del contenido o la clasificación de un documento por temática.
 
-En el caso que nos ocupa, el objetivo del chatbot es conseguir esta información estructurada a partir de la mayor cantidad de recuerdos posibles para ayudar a los terapeutas a construir la historia de vida de un paciente que es mucho más complicada de tratar en bruto. Antes de estructurarla, primero hay que conseguir la información a través de las conversaciones con la persona. De esto se encargará el bot que planteará todo tipo de preguntas para recopilar el máximo número de recuerdos. Estas preguntas se extraen de una base de datos de tipo MongoDB y se eligen de forma ordenada. 
+En el caso que nos ocupa, el objetivo del chatbot es conseguir esta información estructurada a partir de la mayor cantidad de recuerdos posibles para ayudar a los terapeutas a construir la historia de vida de un paciente que es mucho más complicada de tratar en bruto. Antes de estructurarla, primero hay que conseguir la información a través de las conversaciones con la persona. De esto se encargará uno de los módulos del bot (detallado en la sección \ref{rep_preguntas}) que planteará todo tipo de preguntas para recopilar el máximo número de recuerdos. Estas preguntas se extraen de una base de datos de tipo MongoDB y se eligen de forma ordenada.
 
-Las respuestas que da el usuario también se almacenan en Mongo, pero previamente se procesan. El análisis de estas respuestas se va a realizar en varios sentidos, por un lado, se clasificarán los recuerdos en etapas de vida, para estructurar la información lo máximo posible. Por otro lado, se determinará si el texto contiene connotaciones positivas o negativas, de tal forma que en la terapia se puedan evitar los recuerdos negativos que pueden agravar la situación del paciente. Por último, se utilizará el procesamiento del lenguaje natural mediante el análisis morfológico de las palabras para comprender lo que quiere decir el paciente y poder generar la siguiente pregunta más acertada y relacionada con la temática que se está tratando. 
+Las respuestas que da el usuario también se almacenan en Mongo, pero previamente se procesan. El análisis de estas respuestas se va a realizar en varios sentidos, por un lado, se clasificarán los recuerdos en etapas de vida, para estructurar la información lo máximo posible. Por otro lado, se determinará si el texto contiene connotaciones positivas o negativas, de tal forma que en la terapia se puedan evitar los recuerdos negativos que pueden agravar la situación del paciente. Estos dos procesamientos mencionados pertenecen al módulo de clasificación de recuerdos explicado con más detalle en la sección \ref{clasificacion_rec}. Por último, se utilizará el procesamiento del lenguaje natural mediante el análisis morfológico de las palabras para comprender lo que quiere decir el paciente y poder generar la siguiente pregunta más acertada y relacionada con la temática que se está tratando. Este último apartado compondrá el módulo de procesamiento del texto para encadenar preguntas y respuestas descrito en la sección \ref{procesamiento}.
 
-\section {Repertorio de preguntas}
+En resumen, para el funcionamiento íntegro del chatbot, deben estar presentes tres módulos: el módulo de las preguntas, el módulo de la clasificación de recuerdos y el módulo de elección de la mejor siguiente pregunta. Se explican a continuación, uno por sección.
+
+\section {Repertorio de preguntas} \label{rep_preguntas}
 
 El Chatbot que se ha desarrollado no funciona como la mayoría de agentes que se han creado a lo largo de los últimos años. Siri por ejemplo es uno de ellos y funciona de tal manera que es el usuario quien conduce la conversación haciendo preguntas o peticiones. Este programa se diferencia de los demás porque, por el contrario, es el bot quien dirige la conversación planteándole preguntas al usuario. 
 
-El sistema funciona realizando una primera pregunta y, a continuación, por cada respuesta que de el usuario se formula otra pregunta. Esta pregunta estará lo más relacionada posible con la contestación previamente recibida, módulo que se explicará en la sección \ref{procesamiento}. 
+El sistema funciona realizando una primera pregunta y, a continuación, por cada respuesta que dé el usuario se formula otra pregunta. Esta pregunta estará lo más relacionada posible con la contestación previamente recibida, módulo que se explicará en la sección \ref{procesamiento}. 
 
 El repertorio de preguntas se extrae de la base de datos de MongoDB. Esta colección de cuestiones se ha ido formando a lo largo del TFG mediante la reformulación de preguntas sacadas de documentos de terapia ocupacional ofrecidos por expertos terapeutas del proyecto CANTOR. Es decir, no se han cogido directamente de estos documentos con entrevistas, sino que se han ido redactando y adaptando según las necesidades que iban surgiendo para el Chatbot. 
 
-\section{Clasificación de los recuerdos}
+\section{Clasificación de los recuerdos} \label{clasificacion_rec}
 
-La clasificación de los recuerdos en positivos y negativos y la clasificación en etapas de vida se consiguen utilizando el mismo método. Se ha utilizado el componente ``TextCategorizer''\footnote{https://spacy.io/api/textcategorizer} de la librería spacy de python. Se trata de entrenar un modelo para saber identificar si un recuerdo es positivo o negativo o para poder clasificar el recuerdo en diferentes etapas de la vida. Este método de clasificación se ha probado primero para el análisis de sentimiento de los recuerdos y es por eso que se empezará a explicar cómo funciona el categorizador para el \textit{sentiment analysis}. Más adelante en esta sección se explicará cómo se adaptó para la clasificación en etapas. 
+Tal y como se explica en la introducción de este capítulo, este módulo de clasificación tiene dos componentes, el que analiza el sentimiento del texto y distingue entre recuerdos positivos y negativos y, el que categoriza por etapas de vida. Ambos están fundamentados en base a la misma idea y utilizan el mismo método de clasificación automática basado en etiquetas.
 
-Para conseguir que funcione el categorizador de textos se ha utilizado como guía el código del artículo \textit{How to Train Text Classification Model in spaCy}\footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/} para probar cómo se podría entrenar el modelo para que supiese diferenciar los recuerdos negativos de los positivos y así tener la primera clasificación que pidieron los terapeutas especializados del proyecto CANTOR. Antes de probar con recuerdos se probó con un dataset muy grande de reseñas de moda que se ponía como ejemplo en el artículo del que hablábamos anteriormente. Después, se ha probado usando una batería menor de recuerdos positivos encontrados entre los archivos del TFG de Laura Castilla \cite{lcastilla}. También había que incluir recuerdos negativos y, como no se ha encontrado ningún dataset ni textos relacionados, se han usado frases negativas inventadas pensadas para entrenar el modelo de la mejor manera posible.
+Para poder llevar a cabo la distinción de categorías dentro de un texto se ha utilizado la librería \textit{Spacy} de Python que cuenta con un componente llamado ``TextCategorizer''\footnote{https://spacy.io/api/textcategorizer}. Este componente permite entrenar un modelo capaz de predecir las categorías o etiquetas que se quieran identificar de un texto como en este caso, frases positivas o frases negativas. Se probaron otras tecnologías y librerías de Python para conseguir un resultado parecido. Dos de las librerías consideradas fueron ``NLTK'' y ``Chatterbot''. Pero, finalmente se eligió \textit{Spacy} por su versatilidad, su amplia oferta de funcionalidades y por la facilidad con la que se pueden tokenizar de textos. De cara a la evolución del trabajo prevista en un principio, se trataba de la mejor herramienta para poder ampliar el chatbot gracias a sus componentes destinados al procesamiento del lenguaje natural. 
 
-El análisis de sentimiento de los recuerdos funciona siguiendo una serie de pasos. En primer lugar, se añade el componente TextCategorizer (textcat) a un modelo en blanco del idioma español. Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido (como serían NER que explicaré más adelante), es decir, el texto que se almacena en los documentos de spaCy no es analizado por ninguna cadena de procesos porque la tubería de componentes está vacía. Si hubiésemos cogido un modelo pre-entrenado como ``es\_core\_news\_sm'', el clasificador de textos se sumaría al trabajo previo de los procesos que analizan el texto como serían ['tok2vec', 'morphologizer', 'parser', 'attribute\_ruler', 'lemmatizer', 'ner']. Por ejemplo, el componente NER, más reconocido como \textit{Named Entity Recognizer}, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Al usar el modelo en blanco empezamos con el español de cero, sin analizar. Tras añadir el componente textcat, al crear un documento de spaCy, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurándolo, el prototipo coge el texto que usaremos para entrenar nuestro modelo y lo prepara adecuándolo al formato que entiende el clasificador, siendo éste una lista de tuplas (texto, etiqueta). Además, cogerá un porcentaje de esta batería de recuerdos (\% que previamente hemos definido) y lo reservará para la evaluación de las predicciones, es decir, para analizar cómo de bien predice nuestro modelo tras entrenarlo. 
+Una vez elegida, se probó primero la herramienta ``TextCategorizer'' para la clasificación de los recuerdos en positivos y negativos. Por ello, se empezará a explicar cómo funciona teniendo en cuenta esta categorización. Más adelante en esta sección (apartado \ref{clasificacion_etapasvida}) se explicará cómo se adaptó para el módulo de clasificación en etapas. 
 
-Ya tenemos casi todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizarán y evaluarán un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible sin pasarnos de vueltas para que sea óptimo. Se trata de un proceso iterativo en el que las predicciones del modelo se comparan con las etiquetas de referencia para estimar el gradiente de la pérdida. El modelo se entrena utilizando una función que lo analiza y actualiza en cada iteración, la función update(). También se comprueban las predicciones del modelo en cada vuelta, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida.
+\textit{Spacy} proporciona algoritmos de aprendizaje automático que observan unos datos facilitados y construye a partir de ellos un modelo capaz de clasificar gracias a la estadística. Estos algoritmos son los que interesan a la hora de construir el categorizador de textos. Como guía de uso de estas herramientas, se ha utilizado el código del artículo \textit{How to Train Text Classification Model in spaCy}\footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/}.
 
-Una vez afinado el modelo mediante el entreno previo, ya podemos ponerlo a prueba. El prototipo sacará la probabilidad de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo. En lo relativo al chatbot, se ha añadido el archivo ``analyze\_answer'' que alberga esta funcionalidad de análisis de sentimientos que, como se ha explicado, entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega del usuario e identifica si es negativo o positivo. Esto se utilizará como una de las categorías que se le asignan a cada respuesta recibida y que se mete en una base de datos junto a la respuesta que haya dado el usuario al chatbot. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias.
+Los datos iniciales proporcionados para entrenar al modelo suelen proceder de datasets muy grandes para que el modelo sea lo más preciso posible. En este caso, el objetivo es diferenciar los recuerdos negativos de los positivos y así tener la primera clasificación que pidieron los terapeutas especializados del proyecto CANTOR. Es por ello que lo interesante es utilizar un conjunto grande de recuerdos tanto positivos como negativos. Antes de probar con recuerdos se probó el funcionamiento del  ``TextCategorizer'' con un dataset muy grande de reseñas de moda que se ponía como ejemplo en el artículo del que se hablaba anteriormente. Con ello se comprobó la precisión de clasificación y se pasó a adaptarlo a la situación de este TFG. Al no encontrar ningún dataset de recuerdos por ningún lado, se ha usado una batería relativamente pequeña (comparado con el tamaño habitual de entrenamiento) de recuerdos positivos encontrados entre los archivos del TFG de \cite{lcastilla}. También había que incluir recuerdos negativos y para ello se han usado frases negativas inventadas, pensadas para entrenar el modelo de la mejor manera posible. Concretamente, se consiguió reunir una cantidad de 32 recuerdos negativos frente a 140 positivos. A continuación se muestran ejemplos de algunos de los textos:
+
+Positivos:
+\begin{itemize}
+	\item ``El año pasado mis abuelos celebraron 60 años de casados''
+	\item ``Cuando era niña, disfrutaba de las bandas sonoras de las películas de Disney''
+\end{itemize}
+
+Negativos:
+\begin{itemize}
+	\item ``A los 14 años mi padre se murió de cáncer''
+	\item ``No me llevaba bien con mi hermano Jorge y todavía hoy no nos llevamos bien.''
+\end{itemize}
+
+En cuanto al desarrollo del código, el proceso de análisis de sentimiento de los recuerdos funciona siguiendo una serie de pasos. En primer lugar, se define el modelo. Puede crearse vacío o se puede cargar directamente un modelo pre-entrenado con una serie de componentes. Un componente es una función que se aplica a un texto y que lo devuelve procesado de alguna forma. Por ejemplo, el componente ``NER'', más reconocido como \textit{Named Entity Recognizer}, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Para nuestro caso en concreto, se crea un modelo en blanco y se le añade el componente ``TextCategorizer'' (textcat). Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido, es decir, el texto que se quiera procesar no será analizado por ninguna cadena de funciones. El texto procesado que devuelva el modelo se mantiene intacto. Si se hubiese cogido un modelo pre-entrenado como es ``es\_core\_news\_sm'', se habría añadido el componente de clasificación de textos por encima del resto de componentes. Es decir, se sumaría al trabajo de los procesos que analizan el texto. En el caso de ``es\_core\_news\_sm'' está compuesto una serie de funciones (componentes) que se ejecutan en orden. Algunas de ellas son:
+\begin{itemize}
+	\item ``tok2vec'': transforma los tokens en vectores (array de valores numéricos) para que la máquina pueda entender una secuencia de caracteres.
+	\item ``morphologizer'': analiza morfológicamente los tokens
+	\item ``lemmatizer'': halla el lema de las palabras
+	\item ``ner'': reconoce entidades, explicado anteriormente
+\end{itemize}
+Al usar el modelo en blanco se empieza con el español de cero, sin nada que analizar. Tras añadir el componente textcat, cualquier texto a tratar por el modelo, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurando esta función, es necesario entrenar al modelo con los recuerdos preseleccionados anteriormente pero, antes, se preparan adecuándolos al formato que entiende el clasificador, siendo éste una lista de tuplas (texto, etiqueta). Por ejemplo: \\
+
+(El año pasado mis abuelos celebraron 60 años de casados, 1) 
+
+El 1 es equivalente a POSITIVO.\\
+
+El modelo reservará un porcentaje de esta batería de recuerdos (\% que previamente se define) para la evaluación de las predicciones, es decir, para analizar cómo de bien predice nuestro modelo tras entrenarlo. 
+
+Ya está todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizan y evalúan un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible sin pasarse de repeticiones para que sea óptimo. En cada iteración la predicción del modelo se compara con las etiquetas de referencia para estimar el gradiente de la pérdida. El modelo se entrena utilizando una función que lo analiza y actualiza en cada repetición, la función update(). También se comprueban las predicciones del modelo en cada vuelta, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida. Es decir, se realizan estas comprobaciones para asegurarse que el algoritmo está haciendo bien las cosas.
+
+Una vez afinado el modelo mediante el entreno previo, ya se puede ponerlo a prueba. El clasificador sacará la probabilidad de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo. En resumen, como se ha explicado, el programa entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega del usuario e identifica si es negativo o positivo. Esto se utilizará como una de las categorías que se le asignan a cada respuesta recibida y que se mete en una base de datos Mongo junto a la respuesta que haya dado el usuario al chatbot. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias.
 
 Más adelante en el proyecto, se observó que, al analizar el sentimiento de la frase, había recuerdos o simplemente, datos que no encajaban en ninguna de las dos categorías de positivo y negativo. Las emociones neutras son aquellas que no son desagradables ni agradables, es decir, ni negativas ni positivas. Es por esto que se probó a añadir una nueva categoría para los datos neutro como por ejemplo, indicar tu edad, explicar dónde vivías en cierto momento de tu vida, etc. No suponía un gran esfuerzo porque el programa estaba pensado para poder añadir todas las categorías que se considerasen. Sin embargo, a niveles prácticos, se pudo comprobar que no funcionaba igual de bien que la clasificación binaria. El nivel de entrenamiento que necesitaría el modelo para poder distinguir también las frases neutras es mucho mayor, es decir, se necesitarían muchos más casos, ejemplos, para que el modelo aprendiese de ellos. En nuestro caso, solo se añadieron alrededor de 40 recuerdos neutros, de nuevo inventados, por la falta de recursos encontrados en Internet que no proporcionaba ningún dataset parecido al que se buscaba. En la siguiente sección de pruebas se podrá comprobar la diferencia entre meter la categoría neutra y no meterla. 
 
@@ -121,7 +154,7 @@ Por otro lado, también se probó cómo funcionaba el programa añadiendo la cla
 \end{itemize}
 
 
-\subsection{Clasificación en etapas de vida}
+\subsection{Clasificación en etapas de vida} \label{clasificacion_etapasvida}
 
 Otra de las categorías que se añadirá junto a la respuesta en la base de datos de recuerdos será la de la etapa de vida a la que corresponde el recuerdo. En un principio, había que definir las etapas y se decidió usar de forma orientativa la clasificación que hace el Ministerio de Salud de Colombia\footnote{https://www.minsalud.gov.co/proteccionsocial/Paginas/cicloVida.aspx} porque no se encontraron fuentes fiables españolas que diesen una clasificación tan clara y sensata. Aún así se le hicieron algunas adecuaciones para que se ajustase más a lo que se buscaba y lo que se quería sacar en claro. Además, como en el caso del análisis de sentimiento con el neutro, se decidió desde un principio añadir la clasificación ``Indeterminado'' para aquellos recuerdos que no encajasen en ninguna etapa porque fuesen datos generales. Aquí se veía más claro que había información de los usuarios que era muy general y que por defecto no podía meterse en ninguna otra etapa. Sin embargo, pasaba lo mismo que con el neutro, la clasificación era mucho menos acertada. Más adelante se explicará con más detalle. A continuación se muestra la clasificación inicial que se eligió:
 
@@ -273,15 +306,16 @@ Estas funciones se han utilizado para conseguir una representación del texto m�
 
 Por último, dada la respuesta y todas las posibles preguntas ya reducidas a sus lemas, para encontrar la pregunta más adecuada, se compara una a una los lemas de las posibles preguntas con los lemas de la respuesta. Dentro de la lista de posibles preguntas, la que más lemas comunes tenga con la respuesta, gana como siguiente pregunta a formular.
 
-\subsection{Pruebas}
-Veamos algunos ejemplos de cómo funciona el primer acercamiento a un chatbot inteligente que pregunta con algo de sentido. A continuación se muestra la primera pregunta y la respuesta del interrogado:
+\subsection{Ejemplo de funcionamiento de la selección de la siguiente pregunta a realizar}
+
+Se comprueba cómo funciona el módulo que se acaba de explicar. Se muestra un ejemplo de este primer acercamiento a un chatbot inteligente que pregunta con algo de sentido. A continuación se muestra la primera pregunta y la respuesta del interrogado:
 
 \begin{itemize}
 	\item[] IA: ¿Quiénes son las personas más importantes de tu vida?
 	\item[] Tú: Mi familia y concretamente mis padres y mi hermano
 \end{itemize}
 
-En el siguiente texto de salida por consola se muestra el análisis que hace el módulo de cálculo de la mejor siguiente pregunta:
+En el siguiente texto de salida por consola se muestra el análisis que hace el módulo de cálculo de la mejor siguiente pregunta. Irá analizando cada una de las posibles preguntas. La que más coincida con la respuesta del usuario, será la que se plantee para que el usuario pueda contestar de nuevo. La separación entre preguntas se marca con una fila de guiones por consola.
 
 \begin{verbatim}
 	
@@ -293,6 +327,22 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 0
 	-----------------------------------------------
+	
+\end{verbatim}
+
+La pregunta ``¿Cuál es tu sexo?'' se escoge al azar de entre todas las posibles que no hayan sido preguntadas anteriormente. A continuación, elige la primera pregunta a estudiar: ``¿Hay algún momento que te gustaría volver a vivir?''. Al contrario que la anterior, esta se procesa para comparar la similitud con la respuesta del usuario y comprobar si es mejor pregunta que la ya elegida. En las líneas de la salida aparece al principio el número de coincidencias máximo de lemas hasta el momento. Como ninguna pregunta se ha analizado, el contador se encuentra a cero, a la mínima coincidencia, siempre habrá una mejora. Las siguientes líneas en la salida son la pregunta que hasta el momento va ganando como candidata a ser preguntada, la posible pregunta a analizar ahora, los lemas más relevantes de la posible pregunta entre llaves y los lemas de la respuesta entre llaves.
+
+Se extraen los lemas de la posible pregunta y los lemas de la respuesta del paciente, son los siguientes: 
+
+\begin{itemize}
+	\item[] Lemas de la respuesta: \hspace{2cm} hermano, familia, padre
+	\item[] Lemas de la posible pregunta: \hspace{0.8cm} volver, vivir, momento, gustar
+\end{itemize}
+
+Como ningún lema coincide y por ello, no se mejora el contador de máximo número de coincidencias, esta pregunta se descarta y se pasa a estudiar la siguiente.
+
+\begin{verbatim}
+
 	Maxima coincidencia de lemas hasta ahora: 0
 	Pregunta elegida hasta ahora: ¿Cuál es tu sexo?
 	
@@ -301,6 +351,7 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 0
 	-----------------------------------------------
+	
 	Maxima coincidencia de lemas hasta ahora: 0
 	Pregunta elegida hasta ahora: ¿Cuál es tu sexo?
 	
@@ -309,6 +360,13 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 0
 	-----------------------------------------------
+
+\end{verbatim}
+
+Estas dos preguntas tampoco tienen lemas que coincidan y no se eligen como candidatas a ser preguntadas.
+
+\begin{verbatim}	
+	
 	Maxima coincidencia de lemas hasta ahora: 0
 	Pregunta elegida hasta ahora: ¿Cuál es tu sexo?
 	
@@ -317,6 +375,21 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 1
 	-----------------------------------------------
+\end{verbatim}
+
+
+%En el texto podemos observar el análisis de varias posibles preguntas. La separación entre preguntas se marca con una fila de guiones. En cada apartado nos encontramos con el número de lemas que han coincidido en preguntas anteriores, después con la pregunta que hasta el momento va ganando como candidata a ser preguntada, con la posible pregunta, con los lemas más relevantes de la posible pregunta entre llaves y con los lemas de la respuesta entre llaves. Las tres primeras preguntas no serán elegidas como candidatas a ser preguntadas porque no coincide ningún lema de la respuesta con los lemas de la posible pregunta, es decir, no mejora el número de coincidencias. 
+
+Llegados a la cuarta pregunta, ``¿Cómo se llaman tus padres?'' va a encontrar una coincidencia de tal forma:
+
+\begin{itemize}
+	\item[] Lemas de la respuesta: \hspace{2cm} \{hermano, familia, padre\} 
+	\item[] Lemas de la posible pregunta: \hspace{0.8cm} \{llamar, padre\}
+\end{itemize}
+
+Como podemos observar el lema ``padre'' coincide en ambas, es decir, en esta posible pregunta encontramos una coincidencia. Como el número de coincidencias es mejor que 0, la pregunta candidata ``¿Cuál es tu sexo?'' se sustituye por la pregunta ``¿Cómo se llaman tus padres?''. 
+
+\begin{verbatim}
 	Maxima coincidencia de lemas hasta ahora: 1
 	Pregunta elegida hasta ahora: ¿Cómo se llaman tus padres?
 	
@@ -325,6 +398,7 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 1
 	-----------------------------------------------
+	
 	Maxima coincidencia de lemas hasta ahora: 1
 	Pregunta elegida hasta ahora: ¿Cómo se llaman tus padres?
 	
@@ -332,17 +406,17 @@ En el siguiente texto de salida por consola se muestra el análisis que hace el 
 	Lemas de la posible pregunta: {'pequeño', 'casa', 'vivistar'}
 	Lemas de la respuesta anterior: {'familia', 'padre', 'hermano'}
 	Lemas que coinciden: 0
+	
 \end{verbatim}
 
-
-En el texto podemos observar el análisis de varias posibles preguntas. La separación entre preguntas se marca con una fila de guiones. En cada apartado nos encontramos con el número de lemas que han coincidido en preguntas anteriores, después con la pregunta que hasta el momento va ganando como candidata a ser preguntada, con la posible pregunta, con los lemas más relevantes de la posible pregunta entre llaves y con los lemas de la respuesta entre llaves. Las tres primeras preguntas no serán elegidas como candidatas a ser preguntadas porque no coincide ningún lema de la respuesta con los lemas de la posible pregunta, es decir, no mejora el número de coincidencias. Cuando llega a la cuarta pregunta, ``¿Cómo se llaman tus padres?'' va a encontrar una coincidencia de tal forma:
+El contador de máximo número de coincidencias ahora está a uno y solo cambiará si encuentra alguna posible pregunta que coincida en dos o más lemas con la respuesta. Es por esto que cuando se han analizado el resto de posibles preguntas, no se ha encontrado ninguna que sea mejor porque no superan el número de coincidencias en lemas. Aunque encuentra la pregunta ``¿Si tienes hermanos, cómo se llaman?'' que coincide también en un lema, el lema ``hermano'', no sustituye la cuestión elegida hasta el momento. En conclusión, ``¿Cómo se llaman tus padres?'' será la siguiente pregunta que se le plantee al usuario, la cual tiene relación con la que se había hecho anteriormente. La conversación queda de la siguiente forma:
 
 \begin{itemize}
-	\item[] Lemas de la respuesta: \hspace{2cm} \{hermano, familia, padre\} 
-	\item[] Lemas de la posible pregunta: \hspace{0.8cm} \{llamar, padre\}
+	\item[] IA: ¿Quiénes son las personas más importantes de tu vida?
+	\item[] Tú: Mi familia y concretamente mis padres y mi hermano
+	\item[] IA: ¿Cómo se llaman tus padres?
+	\item[] Tú: ...
 \end{itemize}
-
-Como podemos observar el lema ``padre'' coincide en ambas, es decir, en esta posible pregunta encontramos una coincidencia. Como el número de coincidencias es mejor que 0, la pregunta candidata ``¿Cuál ha sido el momento más feliz de tu vida?'' se sustituye por la pregunta ``¿Cómo se llaman tus padres?''. Es por esto que cuando analizamos el resto de posibles preguntas, no encontramos ninguna que sea mejor porque no superan el número de coincidencias en lemas. En conclusión, esta será la siguiente pregunta que se le plantee al usuario, la cual tiene relación con la que se había hecho anteriormente. 
 
 \section{Base de datos MongoDB}
 
