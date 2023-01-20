@@ -6,7 +6,7 @@ def load_data(train, limit=0, split=0.8):
     random.shuffle(train_data)
     texts, labels = zip(*train_data)
     # get the categories for each review
-    cats = [{"POSITIVO": bool(y), "NEGATIVO": not bool(y)} for y in labels]
+    cats = [{"POSITIVO": (False, True)[y == 'positivo'], "NEGATIVO": (False, True)[y == 'negativo']} for y in labels]
 
     # Splitting the training and evaluation data
     split = int(len(train_data) * split)
@@ -20,19 +20,19 @@ def evaluate(tokenizer, textcat, texts, cats):
     tn = 0.0 # True negatives
     for i, doc in enumerate(textcat.pipe(docs)):
         gold = cats[i]
-    for label, score in doc.cats.items():
-        if label not in gold:
-            continue
-        if label == "NEGATIVO":
-            continue
-        if score >= 0.5 and gold[label] >= 0.5:
-            tp += 1.0
-        elif score >= 0.5 and gold[label] < 0.5:
-            fp += 1.0
-        elif score < 0.5 and gold[label] < 0.5:
-            tn += 1
-        elif score < 0.5 and gold[label] >= 0.5:
-            fn += 1
+        for label, score in doc.cats.items():
+            if label not in gold:
+                continue
+            if label == "NEGATIVO":
+                continue
+            if score >= 0.5 and gold[label] >= 0.5:
+                tp += 1.0
+            elif score >= 0.5 and gold[label] < 0.5:
+                fp += 1.0
+            elif score < 0.5 and gold[label] < 0.5:
+                tn += 1
+            elif score < 0.5 and gold[label] >= 0.5:
+                fn += 1
     precision = tp / (tp + fp)
     recall = tp / (tp + fn)
     if (precision + recall) == 0:

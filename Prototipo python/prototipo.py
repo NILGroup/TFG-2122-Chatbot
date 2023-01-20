@@ -8,9 +8,10 @@ import funciones
 
 nlp = spacy.blank('es')
 
-reviews=pd.read_csv("recuerdos.csv")
+reviews=pd.read_csv("IMDB_dataset.csv", error_bad_lines=False)
+#on_bad_lines='skip'
 
-reviews = reviews[['Recuerdo','IND']].dropna()
+reviews = reviews[['review_es','sentimiento']].dropna()
 reviews.head(10)
 
 
@@ -20,7 +21,7 @@ print(nlp.pipe_names)
 textcat.add_label("POSITIVO")
 textcat.add_label("NEGATIVO")
 
-reviews['tuples'] = reviews.apply(lambda row: (row['Recuerdo'],row['IND']), axis=1)
+reviews['tuples'] = reviews.apply(lambda row: (row['review_es'],row['sentimiento']), axis=1)
 train =reviews['tuples'].tolist()
 print(train[:10])
 
@@ -44,7 +45,7 @@ with nlp.disable_pipes(*other_pipes): # only train textcat
     print('{:^5}\t'.format('LOSS'))
 
     # Performing training
-    for i in range(8):
+    for i in range(2):
         losses = {}
         batches = minibatch(train_data, size=compounding(4., 32., 1.001))
         for batch in batches:
@@ -73,3 +74,40 @@ doc = nlp(test_text)
 doc2 = nlp(test_text2)
 print('{}: {}'.format(test_text, doc.cats))
 print('{}: {}'.format(test_text2, doc2.cats))
+
+def clasificar_emocion(text):
+    categories = []
+    
+    doc = nlp(text)
+    print('{}: {}'.format(text, doc.cats))
+
+    '''if doc.cats['NEGATIVO'] > doc.cats['POSITIVO'] and doc.cats['NEGATIVO'] > doc.cats['NEUTRO']:
+        categories.append('negativo')
+    elif doc.cats['POSITIVO'] > doc.cats['NEGATIVO'] and doc.cats['POSITIVO'] > doc.cats['NEUTRO']:
+        categories.append('positivo')
+    else:
+        categories.append('neutro')'''
+
+    if doc.cats['NEGATIVO'] > doc.cats['POSITIVO']:
+        categories.append('negativo')
+    else:
+        categories.append('positivo')
+    
+    print(categories)
+
+    return categories
+
+
+clasificar_emocion("Mi abuela se murio en 1998")
+clasificar_emocion("Mi mejor recuerdo es el del nacimiento de mi hijo")
+clasificar_emocion("Tengo 23 años")
+clasificar_emocion("Me dolió muchísimo cuando me rompí una pierna")
+clasificar_emocion("Mi hermano y yo nos pasabamos las tardes haciendo puzzles")
+clasificar_emocion("Durante la infancia estuvimos viviendo en Moratalaz")
+clasificar_emocion("Mi pareja sufrió depresión después del parto")
+
+while True:
+    print(f"Introduzca el texto: ")
+    texto = input()
+    print(f"El texto es: {texto}")
+    clasificar_emocion(texto)

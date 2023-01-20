@@ -21,9 +21,9 @@ El repertorio de preguntas se extrae de la base de datos de MongoDB. Esta colecc
 
 Tal y como se explica en la introducción de este capítulo, este módulo de clasificación tiene dos componentes, el que analiza el sentimiento del texto y distingue entre recuerdos positivos y negativos y, el que categoriza por etapas de vida. Ambos están fundamentados en base a la misma idea y utilizan el mismo método de clasificación automática basado en etiquetas.
 
-Para poder llevar a cabo la distinción de categorías dentro de un texto se ha utilizado la librería \textit{Spacy} de Python que cuenta con un componente llamado ``TextCategorizer''\footnote{https://spacy.io/api/textcategorizer}. Este componente permite entrenar un modelo capaz de predecir las categorías o etiquetas que se quieran identificar de un texto como en este caso, frases positivas o frases negativas. Se probaron otras tecnologías y librerías de Python para conseguir un resultado parecido. Dos de las librerías consideradas fueron ``NLTK'' y ``Chatterbot''. Pero, finalmente se eligió \textit{Spacy} por su versatilidad, su amplia oferta de funcionalidades y por la facilidad con la que se pueden tokenizar de textos. De cara a la evolución del trabajo prevista en un principio, se trataba de la mejor herramienta para poder ampliar el chatbot gracias a sus componentes destinados al procesamiento del lenguaje natural. 
+Para poder llevar a cabo la distinción de categorías dentro de un texto se ha utilizado la librería \textit{Spacy} de Python que cuenta con un componente llamado ``TextCategorizer''\footnote{https://spacy.io/api/textcategorizer}. Este componente permite entrenar un modelo capaz de predecir las categorías o etiquetas que se quieran identificar de un texto como en este caso, frases positivas o frases negativas. Se probaron otras tecnologías y librerías de Python para conseguir un resultado parecido. Dos de las librerías consideradas fueron ``NLTK'' y ``Chatterbot''. Pero, finalmente se eligió \textit{Spacy} por su versatilidad, su amplia oferta de funcionalidades y por la facilidad con la que se pueden tokenizar textos. De cara a la evolución del trabajo, prevista en un principio, se trataba de la mejor herramienta para poder ampliar el chatbot gracias a sus componentes destinados al procesamiento del lenguaje natural. 
 
-Una vez elegida, se probó primero la herramienta ``TextCategorizer'' para la clasificación de los recuerdos en positivos y negativos. Por ello, se empezará a explicar cómo funciona teniendo en cuenta esta categorización. Más adelante en esta sección (apartado \ref{clasificacion_etapasvida}) se explicará cómo se adaptó para el módulo de clasificación en etapas. 
+Una vez elegida, se probó primero la herramienta ``TextCategorizer'' para la clasificación de los recuerdos en positivos y negativos. Por ello, se empezará a explicar haciendo referencia únicamente al análisis de sentimientos. Más adelante en esta sección (apartado \ref{clasificacion_etapasvida}) se explicará cómo se adaptó para el módulo de clasificación en etapas. 
 
 \textit{Spacy} proporciona algoritmos de aprendizaje automático que observan unos datos facilitados y construye a partir de ellos un modelo capaz de clasificar gracias a la estadística. Estos algoritmos son los que interesan a la hora de construir el categorizador de textos. Como guía de uso de estas herramientas, se ha utilizado el código del artículo \textit{How to Train Text Classification Model in spaCy}\footnote{https://www.machinelearningplus.com/nlp/custom-text-classification-spacy/}.
 
@@ -41,28 +41,70 @@ Negativos:
 	\item ``No me llevaba bien con mi hermano Jorge y todavía hoy no nos llevamos bien.''
 \end{itemize}
 
-En cuanto al desarrollo del código, el proceso de análisis de sentimiento de los recuerdos funciona siguiendo una serie de pasos. En primer lugar, se define el modelo. Puede crearse vacío o se puede cargar directamente un modelo pre-entrenado con una serie de componentes. Un componente es una función que se aplica a un texto y que lo devuelve procesado de alguna forma. Por ejemplo, el componente ``NER'', más reconocido como \textit{Named Entity Recognizer}, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Para nuestro caso en concreto, se crea un modelo en blanco y se le añade el componente ``TextCategorizer'' (textcat). Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido, es decir, el texto que se quiera procesar no será analizado por ninguna cadena de funciones. El texto procesado que devuelva el modelo se mantiene intacto. Si se hubiese cogido un modelo pre-entrenado como es ``es\_core\_news\_sm'', se habría añadido el componente de clasificación de textos por encima del resto de componentes. Es decir, se sumaría al trabajo de los procesos que analizan el texto. En el caso de ``es\_core\_news\_sm'' está compuesto una serie de funciones (componentes) que se ejecutan en orden. Algunas de ellas son:
+En cuanto al desarrollo del código, el proceso de categorización de recuerdos funciona siguiendo una serie de pasos. En la figura \ref{fig:flujo_cat} se encuentra el diagrama de flujo del clasificador con cada uno de los pasos que sigue para entrenar un modelo y poder, así, predecir las categorías. 
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.7]{Imagenes/Vectorial/diagrama_flujo_categorizador}
+	\caption{Diagrama de flujo del categorizador}
+	\label{fig:flujo_cat}
+\end{figure}
+
+En primer lugar, se define el modelo. Puede crearse vacío o se puede cargar directamente un modelo pre-entrenado con una serie de componentes. Un componente es una función que se aplica a un texto y que lo devuelve procesado de alguna forma. Por ejemplo, el componente ``NER'', más reconocido como \textit{Named Entity Recognizer}, reconoce entidades dentro del texto como nombres de personas, fechas o lugares. Para nuestro caso en concreto, se crea un modelo en blanco y se le añade el componente ``TextCategorizer'' (textcat). Un modelo en blanco es un modelo que no tiene ningún componente de spaCy definido, es decir, el texto que se quiera procesar no será analizado por ninguna cadena de funciones. El texto procesado que devuelva el modelo se mantiene intacto. Si se hubiese cogido un modelo pre-entrenado como es ``es\_core\_news\_sm'', se habría añadido el componente de clasificación de textos por encima del resto de componentes. Es decir, se sumaría al trabajo de los procesos que analizan el texto. En el caso de ``es\_core\_news\_sm'' está compuesto una serie de funciones (componentes) que se ejecutan en orden. Algunas de ellas son:
+
 \begin{itemize}
 	\item ``tok2vec'': transforma los tokens en vectores (array de valores numéricos) para que la máquina pueda entender una secuencia de caracteres.
 	\item ``morphologizer'': analiza morfológicamente los tokens
 	\item ``lemmatizer'': halla el lema de las palabras
 	\item ``ner'': reconoce entidades, explicado anteriormente
 \end{itemize}
-Al usar el modelo en blanco se empieza con el español de cero, sin nada que analizar. Tras añadir el componente textcat, cualquier texto a tratar por el modelo, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurando esta función, es necesario entrenar al modelo con los recuerdos preseleccionados anteriormente pero, antes, se preparan adecuándolos al formato que entiende el clasificador, siendo éste una lista de tuplas (texto, etiqueta). Por ejemplo: \\
 
-(El año pasado mis abuelos celebraron 60 años de casados, 1) 
+En este caso, no se necesitaban las funciones que ofrecían los modelos pre-entrenados y por eso se empieza con uno vacío. Al usar el modelo en blanco se empieza con el español de cero, sin nada que analizar. Tras añadir el componente textcat, cualquier texto a tratar por el modelo, automáticamente, pasará por el proceso de clasificación que le indiquemos. Para que textcat funcione como categorizador de recuerdos, se le añade a nuestro nuevo componente dos etiquetas, NEGATIVO y POSITIVO, que definirán cuánto de negativo es un recuerdo y cuánto de positivo. Para seguir configurando esta función, es necesario cargar los datos iniciales, aquellos recuerdos seleccionados anteriormente que serán los que entrenen al modelo. Esta información se prepara antes de ser procesada para que el clasificador la entienda. Es decir, los datos se adecuan al formato que entiende el modelo siendo éste una lista de tuplas (texto, categoría). Por ejemplo: \\
 
-El 1 es equivalente a POSITIVO.\\
+\begin{verbatim}
+	(El año pasado mis abuelos celebraron 60 años de casados, 
+			{'cats': {'POSITIVO': True, 'NEGATIVO': False}}) 
+\end{verbatim}
 
-El modelo reservará un porcentaje de esta batería de recuerdos (\% que previamente se define) para la evaluación de las predicciones, es decir, para analizar cómo de bien predice nuestro modelo tras entrenarlo. 
 
-Ya está todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizan y evalúan un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible sin pasarse de repeticiones para que sea óptimo. En cada iteración la predicción del modelo se compara con las etiquetas de referencia para estimar el gradiente de la pérdida. El modelo se entrena utilizando una función que lo analiza y actualiza en cada repetición, la función update(). También se comprueban las predicciones del modelo en cada vuelta, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida. Es decir, se realizan estas comprobaciones para asegurarse que el algoritmo está haciendo bien las cosas.
+El modelo reservará un porcentaje de esta batería de recuerdos (\% que previamente se define) para la evaluación de las predicciones, es decir, para analizar cómo de bien predice el modelo tras entrenarlo. 
 
-Una vez afinado el modelo mediante el entreno previo, ya se puede ponerlo a prueba. El clasificador sacará la probabilidad de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo. En resumen, como se ha explicado, el programa entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega del usuario e identifica si es negativo o positivo. Esto se utilizará como una de las categorías que se le asignan a cada respuesta recibida y que se mete en una base de datos Mongo junto a la respuesta que haya dado el usuario al chatbot. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias.
+Ya está todo preparado para comenzar a entrenar el modelo, se dividen los casos de entrenamiento en lotes que se analizan y evalúan un número definido de iteraciones para asegurar que el entrenamiento es lo más preciso posible. Es importante no superar un número de repeticiones para que sea también óptimo. El modelo se entrena utilizando una función de \textit{Spacy} que lo analiza y actualiza en cada repetición con lo nuevo que ha aprendido, la función update\footnote{https://spacy.io/api/textcategorizer\#update}. Funciona de la siguiente forma: 
+\begin{enumerate}
+	\item Se inicializan los parámetros del modelo de forma aleatoria.
+	\item Se predice el primer lote de ejemplos con los parámetros que se han fijado.
+	\item Se revisan estas predicciones comparándolas con las etiquetas correctas.
+	\item Se decide cómo cambiar los parámetros actuales para obtener mejores predicciones en las próximas veces.
+	\item Se hace la pequeña corrección de los parámetros.
+	\item Vuelta al paso 2 pero con el siguiente lote de ejemplos.
+\end{enumerate}
+Se repite este bucle de entrenamiento hasta que el modelo deje de mejorar. En la figura \ref{fig:entrenamiento} sacada del manual de \textit{Spacy}\footnote{https://course.spacy.io/es/chapter4} se puede visualizar cómo funciona. 
 
-Más adelante en el proyecto, se observó que, al analizar el sentimiento de la frase, había recuerdos o simplemente, datos que no encajaban en ninguna de las dos categorías de positivo y negativo. Las emociones neutras son aquellas que no son desagradables ni agradables, es decir, ni negativas ni positivas. Es por esto que se probó a añadir una nueva categoría para los datos neutro como por ejemplo, indicar tu edad, explicar dónde vivías en cierto momento de tu vida, etc. No suponía un gran esfuerzo porque el programa estaba pensado para poder añadir todas las categorías que se considerasen. Sin embargo, a niveles prácticos, se pudo comprobar que no funcionaba igual de bien que la clasificación binaria. El nivel de entrenamiento que necesitaría el modelo para poder distinguir también las frases neutras es mucho mayor, es decir, se necesitarían muchos más casos, ejemplos, para que el modelo aprendiese de ellos. En nuestro caso, solo se añadieron alrededor de 40 recuerdos neutros, de nuevo inventados, por la falta de recursos encontrados en Internet que no proporcionaba ningún dataset parecido al que se buscaba. En la siguiente sección de pruebas se podrá comprobar la diferencia entre meter la categoría neutra y no meterla. 
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{Imagenes/Vectorial/entrenamiento_modelo}
+	\caption{Entrenamiento del modelo}
+	\label{fig:entrenamiento}
+\end{figure}
+
+Además, en cada vuelta, también se realizan una serie de pruebas para comprobar la precisión de las predicciones, se comparan con las etiquetas de referencia para estimar la desviación de la pérdida, es decir, cuánto de alejado se encuentra del valor real. Estas comprobaciones se realizan para asegurarse que el algoritmo está haciendo bien las cosas.
+
+Una vez afinado el modelo mediante el entreno previo, ya se puede poner a prueba. El clasificador sacará la probabilidad entre 0 y 1 de que un texto procesado por spacy sea un recuerdo positivo y la probabilidad de que sea uno negativo de esta forma:
+
+\begin{verbatim}
+	Texto analizado: {'POSITIVO': probabilidad entre 0 y 1,
+		 'NEGATIVO': probabilidad entre 0 y 1}
+\end{verbatim}
+
+Como se trata de dos etiquetas mutuamente excluyentes la probabilidad de una será la diferencia de la otra. Así, la que mayor probabilidad tenga será la elegida como predicción final. Si la probabilidad de que sea un texto positivo es mayor que la de que sea negativo, el recuerdo será finalmente evaluado como positivo y lo mismo al revés.
+
+En resumen, como se ha explicado, el programa entrena primero al modelo con textos positivos y negativos y luego evalúa el texto que le llega del usuario e identifica si es negativo o positivo. Esto se utilizará como una de las categorías que se le asignan a cada respuesta recibida y que se mete en una base de datos Mongo junto a la respuesta que haya dado el usuario al chatbot. Este análisis de sentimiento también servirá para identificar temáticas dolorosas para el interrogado que no deberían ser usadas en las terapias.
+
+Más adelante en el proyecto, se observó que, al analizar el sentimiento de la frase, había recuerdos o simplemente, datos que no encajaban en ninguna de las dos categorías de positivo y negativo. Las emociones neutras son aquellas que no son desagradables ni agradables, es decir, ni negativas ni positivas. Es por esto que se probó a añadir una nueva categoría para los datos neutro como por ejemplo, indicar tu edad, explicar dónde vivías en cierto momento de tu vida, etc. No suponía un gran esfuerzo porque el programa estaba pensado para poder añadir todas las categorías que se considerasen. Sin embargo, a niveles prácticos, se pudo comprobar que no funcionaba igual de bien que la clasificación binaria. El nivel de entrenamiento que necesitaría el modelo para poder distinguir también las frases neutras es mucho mayor, es decir, se necesitarían muchos más casos, ejemplos, para que el modelo aprendiese de ellos. En este caso, solo se añadieron alrededor de 40 recuerdos neutros, de nuevo inventados, por la falta de recursos encontrados en Internet que no proporcionaba ningún dataset parecido al que se buscaba. En la siguiente sección de pruebas se podrá comprobar la diferencia entre meter la categoría neutra y no meterla. 
 
 \subsection{Pruebas del análisis de sentimiento}
+
+%https://www.kaggle.com/datasets/luisdiegofv97/imdb-dataset-of-50k-movie-reviews-spanish
 
 Para comprobar la precisión y el correcto funcionamiento del módulo de análisis de sentimiento, se hicieron bastantes pruebas que corroboraron que la clasificación en recuerdos negativos y positivos funcionaba bastante bien pero que podría mejorarse metiendo muchos más casos de entrenamiento para afinar el modelo. A continuación se muestran algunos ejemplos de frases que se han analizado con el categorizador de textos y las conclusiones que se han sacado. Entre llaves se muestra la probabilidad sobre 1 de que la frase sea positiva y la probabilidad sobre 1 de que sea negativa. Entre corchetes se muestra la categoría a la que pertenece la frase por tener la mayor probabilidad las dos:
 
@@ -152,6 +194,8 @@ Por otro lado, también se probó cómo funcionaba el programa añadiendo la cla
 	\end{verbatim}
 	
 \end{itemize}
+
+%Faltos de ese dataset de recuerdos para el análisis de sentimientos se buscó uno que no tuviese nada que ver pero que podría servir para hacer una buena predicción en negativo y positivo. Viendo que algo no debía estar funcionando bien y que la solución podía estar en las dimensiones del dataset.
 
 
 \subsection{Clasificación en etapas de vida} \label{clasificacion_etapasvida}
