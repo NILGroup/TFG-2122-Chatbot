@@ -104,8 +104,6 @@ Más adelante en el proyecto, se observó que, al analizar el sentimiento de la 
 
 \subsection{Pruebas del análisis de sentimiento}
 
-%https://www.kaggle.com/datasets/luisdiegofv97/imdb-dataset-of-50k-movie-reviews-spanish
-
 Para comprobar la precisión y el correcto funcionamiento del módulo de análisis de sentimiento, se hicieron bastantes pruebas que corroboraron que la clasificación en recuerdos negativos y positivos funcionaba bastante bien pero que podría mejorarse metiendo muchos más casos de entrenamiento para afinar el modelo. A continuación se muestran algunos ejemplos de frases que se han analizado con el categorizador de textos y las conclusiones que se han sacado. Entre llaves se muestra la probabilidad sobre 1 de que la frase sea positiva y la probabilidad sobre 1 de que sea negativa. Entre corchetes se muestra la categoría a la que pertenece la frase por tener la mayor probabilidad las dos:
 
 \begin{itemize}
@@ -129,7 +127,7 @@ Para comprobar la precisión y el correcto funcionamiento del módulo de anális
 		{'POSITIVO': 2.0322097043390386e-05, 'NEGATIVO': 0.9999797344207764}
 		['negativo']
 	\end{verbatim}
-	\item ``Mi hermano y yo nos pasabamos las tardes haciendo puzzles''
+	\item ``Mi hermano y yo nos pasábamos las tardes haciendo puzles''
 	\begin{verbatim}
 			{'POSITIVO': 0.9681606888771057, 'NEGATIVO': 0.031839337199926376}
 		['positivo']
@@ -174,7 +172,7 @@ Por otro lado, también se probó cómo funcionaba el programa añadiendo la cla
 			'NEUTRO': 0.0003183614171575755}
 		['negativo']
 	\end{verbatim}
-	\item ``Mi hermano y yo nos pasabamos las tardes haciendo puzzles''
+	\item ``Mi hermano y yo nos pasábamos las tardes haciendo puzles''
 	\begin{verbatim}
 		{'POSITIVO': 2.354631942580454e-05, 'NEGATIVO': 0.9972598552703857, 
 			'NEUTRO': 0.0027166458312422037}
@@ -195,8 +193,50 @@ Por otro lado, también se probó cómo funcionaba el programa añadiendo la cla
 	
 \end{itemize}
 
-%Faltos de ese dataset de recuerdos para el análisis de sentimientos se buscó uno que no tuviese nada que ver pero que podría servir para hacer una buena predicción en negativo y positivo. Viendo que algo no debía estar funcionando bien y que la solución podía estar en las dimensiones del dataset.
+En esta sección de pruebas se puede comprobar que algo no debe estar funcionando del todo bien y que el problema de las predicciones puede estar en las dimensiones del dataset que se le proporciona al modelo. Faltos de un dataset grande de recuerdos para el análisis de sentimientos se buscó uno que no fuese de recuerdos como tal pero que sí podría servir para hacer una buena predicción de negativos y positivos. Se encontró un dataset\footnote{https://www.kaggle.com/datasets/luisdiegofv97/imdb-dataset-of-50k-movie-reviews-spanish} en español de 50,000 reseñas de IMBD de películas con un sentimiento positivo o negativo adjunto (no se encuentra ninguno que incluya el neutro). Probando el clasificador cargando esta colección de datos al modelo, se observan los siguientes resultados: 
 
+\begin{itemize}
+	\item ``Mi abuela se murió en 1998''
+	\begin{verbatim}
+		{'POSITIVO': 0.8378736972808838, 'NEGATIVO': 0.16212628781795502}
+		['positivo']
+	\end{verbatim}
+	\item ``Mi mejor recuerdo es el del nacimiento de mi hijo''
+	\begin{verbatim}
+		{'POSITIVO': 0.9998306035995483, 'NEGATIVO': 0.00016938232874963433}
+		['positivo']
+	\end{verbatim}
+	\item ``Tengo 23 años''
+	\begin{verbatim}
+		{'POSITIVO': 0.9846466779708862, 'NEGATIVO': 0.015353254973888397}
+		['positivo']
+	\end{verbatim}
+	\item ``Me dolió muchísimo cuando me rompí una pierna''
+	\begin{verbatim}
+		{'POSITIVO': 0.08775553107261658, 'NEGATIVO': 0.9122444987297058}
+		['negativo']
+	\end{verbatim}
+	\item ``Mi hermano y yo nos pasábamos las tardes haciendo puzles''
+	\begin{verbatim}
+		{'POSITIVO': 0.999742329120636, 'NEGATIVO': 0.0002577087143436074}
+		['positivo']
+	\end{verbatim}
+	\item ``Durante la infancia estuvimos viviendo en Moratalaz''
+	\begin{verbatim}
+		{'POSITIVO': 0.9989288449287415, 'NEGATIVO': 0.0010711398208513856}
+		['positivo']
+	\end{verbatim}
+	\item ``Mi pareja sufrió depresión después del parto''
+	\begin{verbatim}
+		{'POSITIVO': 0.03745762258768082, 'NEGATIVO': 0.9625424146652222}
+		['negativo']
+	\end{verbatim}
+	
+\end{itemize}
+
+Podemos observar que acierta todas las frases menos la primera. Se ha probado con más frases relacionadas con la muerte y todas las predice como positivas. En este caso, el entrenamiento parece no haber perfeccionado los resultados, puede ser por la información que proporciona el dataset, que se aleje mucho de lo que pueda surgir de un recuerdo o, por algun fallo en el proceso de entrenamiento. 
+
+En conclusión, lo ideal habría sido tener una colección de datos lo suficientemente grande para entrenar bien al modelo y que estuviese relacionado con los recuerdos y memorias de la vida de personas. Se plantea como trabajo futuro. Por la precisión de los resultados obtenidos finalmente, se optó por el primer entrenamiento, que tiene un dataset pequeño de recuerdos pero funciona relativamente bien, como se ha podido observar en estas pruebas. La aplicación, por ende, funciona con el primer clasificador planteado. 
 
 \subsection{Clasificación en etapas de vida} \label{clasificacion_etapasvida}
 
@@ -336,7 +376,7 @@ Esta sección consiste en conseguir que las preguntas que se hagan al interrogad
 
 Lo primero que se ha hecho para encontrar la siguiente pregunta a hacer es coger la lista de todas las posibles preguntas y eliminar aquellas que ya han sido contestadas anteriormente para no repetirlas. 
 
-Lo siguiente que se hará es pasar tanto la respuesta más reciente que ha dado el interrogado como todas las posibles preguntas por un proceso de síntesis. Para ello vamos a utilizar el analizador de texto Spacy utilizando el código del TFG de Laura Castilla Castellano (Generación de historias a partir de una base de conocimiento), en concreto el código que aparece en el archivo ``analysis.py'' de su código, que contiene funciones para el procesamiento y síntesis de los textos. Los pasos que Laura sigue para el análisis del texto aparecen en el apartado 5.1 (Analizar textos para obtener sugerencias) de su memoria, páginas 30 y 31. Las funciones que se han reutilizado en este trabajo, con algunas modificaciones, son las siguientes:
+Lo siguiente que se hará es pasar tanto la respuesta más reciente que ha dado el interrogado como todas las posibles preguntas por un proceso de síntesis. Para ello vamos a utilizar el analizador de textos de \textit{Spacy} utilizando algunas de las funciones procedentes del código del TFG de \cite{lcastilla}, en concreto del archivo ``analysis.py'' de su código. Se trata de funciones para el procesamiento y síntesis de los textos. Los pasos que Laura sigue para el análisis del texto aparecen en el apartado 5.1 (Analizar textos para obtener sugerencias) de su memoria, páginas 30 y 31. Las funciones que se han reutilizado en este trabajo, con algunas modificaciones, son las siguientes:
 
 \begin{itemize}
 	\item Read: Coge el texto a analizar y elimina signos de puntuación
@@ -346,7 +386,7 @@ Lo siguiente que se hará es pasar tanto la respuesta más reciente que ha dado 
 	\item Get\_most\_common\_words: Coge las palabras más comunes de todos los tipos del texto
 \end{itemize}
 
-Estas funciones se han utilizado para conseguir una representación del texto más precisa y reducida. Solo los lemas de las palabras importantes del texto serán usados para este módulo de encadenamiento de preguntas y respuestas.
+Estas funciones se han utilizado para conseguir una representación del texto más precisa y reducida. Únicamente se han utilizado este código para reducir los lemas de las palabras importantes del texto que es lo que se usado para este módulo de encadenamiento de preguntas y respuestas. 
 
 Por último, dada la respuesta y todas las posibles preguntas ya reducidas a sus lemas, para encontrar la pregunta más adecuada, se compara una a una los lemas de las posibles preguntas con los lemas de la respuesta. Dentro de la lista de posibles preguntas, la que más lemas comunes tenga con la respuesta, gana como siguiente pregunta a formular.
 
@@ -488,7 +528,7 @@ En la figura \ref{fig:mongo_resp} se muestra un ejemplo de documento de la colec
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1.0]{Imagenes/Vectorial/mongo_respuesta}
+	\includegraphics[scale=0.8]{Imagenes/Vectorial/mongo_respuesta}
 	\caption{Documento de la colección de respuestas}
 	\label{fig:mongo_resp}
 \end{figure}
