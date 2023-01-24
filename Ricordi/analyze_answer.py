@@ -44,7 +44,8 @@ with nlp.disable_pipes(*other_pipes):
     # Performing training
     for i in range(8):
         losses = {}
-        batches = minibatch(train_data, size=compounding(4., 32., 1.001))
+        batches = minibatch(train_data, compounding(4., 32., 1.001))
+        num = 0
         for batch in batches:
             texts, annotations = zip(*batch)
             example = []
@@ -55,8 +56,9 @@ with nlp.disable_pipes(*other_pipes):
 
             
             nlp.update(example, sgd=optimizer, drop=0.2, losses=losses)
+            num += 1
 
-
+        print(num)
         with nlp.use_params(optimizer.averages):
             scores = funciones.evaluate(nlp.tokenizer, textcat, dev_texts, dev_cats)
         

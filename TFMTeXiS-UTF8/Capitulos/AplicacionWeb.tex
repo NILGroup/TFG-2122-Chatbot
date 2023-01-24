@@ -1,7 +1,7 @@
 \chapter{Aplicación Web}
 \label{cap:aplicacionWeb}
 
-La aplicación web se ha creado con el objetivo de proporcionar una interfaz web atractiva y manejable tanto para los terapeutas como para sus pacientes. Ahora bien, el chatbot es la esencia de este TFG y, por tanto, es la herramienta principal que se desarrolla en la página web. El chatbot se ha pensado para ser utilizado por los pacientes. La aplicación web permite probar el chatbot de forma mucho más manejable y visible que desde un terminal del entorno de desarrollo. Además, se ha querido añadir más funcionalidades para los terapeutas que, podrán acceder a los recuerdos de sus pacientes de forma sencilla y visual. En este capítulo se explicarán los pasos que se han seguido para desarrollar la página web desde el principio con un prototipo inicial a mano alzada hasta el final con una aplicación web funcional y con numerables vistas. 
+La aplicación web se ha creado con el objetivo de proporcionar una interfaz web atractiva y manejable tanto para los terapeutas como para sus pacientes. Ahora bien, el chatbot es la esencia de este TFG y, por tanto, es la herramienta principal que se desarrolla en la página web. El chatbot se ha pensado para ser utilizado por los pacientes. La aplicación web permite probar el chatbot de forma mucho más manejable y visible que desde un terminal del entorno de desarrollo. Además, se ha querido añadir más funcionalidades para los terapeutas, que podrán acceder a los recuerdos de sus pacientes de forma sencilla y visual. En este capítulo se explicarán los pasos que se han seguido para desarrollar la página web desde el principio con un prototipo inicial a mano alzada hasta el final con una aplicación web funcional y con numerables vistas. 
 
 
 \section{Prototipo inicial}
@@ -101,7 +101,7 @@ Se trata de una base de datos ideal para conjuntos de datos que tienen una estru
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=1.0]{Imagenes/Vectorial/diagrama_entidad_relacion_mysql}
+	\includegraphics[scale=0.8]{Imagenes/Vectorial/diagrama_entidad_relacion_mysql}
 	\caption{Diagrama de entidad-relación MySQL}
 	\label{fig:diagramaEER}
 \end{figure}
@@ -118,9 +118,9 @@ Son los dos tipos de usuarios que podrán iniciar sesión en la aplicación. Por
 \end{figure}
 
 \begin{itemize}
-	\item \textit{id}: El entero que representa el identificador de la fila, único y clave primaria para poder diferenciar cada registro inequívocamente
-	\item \textit{name}: El nombre de usuario, una cadena de caracteres, que se utilizará para referirse al navegante en la aplicación web
-	\item \textit{email}: El correo electrónico, una cadena de caracteres, único también para que no puedan existir dos usuarios con el mismo email, lo que supondría un error
+	\item \textit{id}: El entero que representa el identificador de la fila, único y clave primaria para poder diferenciar cada registro inequívocamente.
+	\item \textit{name}: El nombre de usuario, una cadena de caracteres, que se utilizará para referirse al navegante en la aplicación web.
+	\item \textit{email}: El correo electrónico, una cadena de caracteres, único también para que no puedan existir dos usuarios con el mismo email, lo que supondría un error.
 	\item \textit{password}: La contraseña, cadena de caracteres que se guardará cifrada. Cuando se intente iniciar sesión, se comprobará si los datos son correctos y las contraseñas coinciden.
 	\item \textit{type}: Cadena de caracteres que indica si el tipo de usuario es terapeuta o paciente. Es necesario distinguirles porque tendrán acceso a funcionalidades distintas en la aplicación web.
 \end{itemize}
@@ -138,7 +138,7 @@ Tabla en la que se guardan las relaciones entre terapeutas y sus pacientes. Por 
 \begin{itemize}
 	\item \textit{id}: El entero que representa el identificador de la fila, único y clave primaria, se utiliza igual que en el de la tabla de usuarios.
 	\item \textit{therapist}: El identificador del terapeuta al que le correponde la terapia  encargado de tratar al paciente que toque.
-	\item \textit{patient}: El identificador del paciente señalado para la terapia
+	\item \textit{patient}: El identificador del paciente señalado para la terapia.
 	\item \textit{code}: El entero que representa un código, único, para que el paciente pueda registrarse como tal en la aplicación y con su terapeuta asignado. Son números elegidos aleatoriamente del 100 al 999. Una vez se registra el paciente, no se vuelve a necesitar este código para nada.
 	\item \textit{user}: Cadena de caracteres utilizada para identificar por nombre a un paciente que aún no se ha registrado pero sí tiene código asignado.
 \end{itemize}
@@ -168,7 +168,7 @@ Para que tenga sentido este fichero sería necesario crear aparte un archivo HTM
 	> python -m flask run
 \end{verbatim}
 
-Flask incluye un servidor interno propio al que se podrá acceder desde \textit{localhost}. Para que este servidor sepa qué aplicación debe lanzar, se usa el primer comando que apunta al fichero run del directorio en el que se encuentra la aplicación. El segundo comando es el que definitivamente lanza la aplicación. Podemos comprobar que la aplicación funciona entrando a un navegador y accediendo a la URL ``http://127.0.0.1:5000/'' que cargará el fichero principal index.html. 
+Flask incluye un servidor interno propio al que se podrá acceder desde \textit{localhost}. Para que este servidor sepa qué aplicación debe lanzar, se usa el primer comando que apunta al fichero run del directorio en el que se encuentra la aplicación. El segundo comando es el que definitivamente lanza la aplicación. Podemos comprobar que la aplicación funciona entrando a un navegador y accediendo a la URL local ``http://127.0.0.1:5000/'' que cargará el fichero principal index.html. 
 
 Una vez tenemos funcionando la aplicación ya solo queda ampliar sus funcionalidades que se explicarán a continuación. 
 
@@ -188,7 +188,7 @@ Se añade esta funcionalidad para que cada recuerdo se pueda asociar a un usuari
 %Aparte de haber definido el formulario, se necesita una url asociada a cada página, tanto la de inicio de sesión como la de registro. Como había comentado antes, las URLs que formen parte de la aplicación deben estar definidas en el fichero ``run.py''. Serán respectivamente las URLs ``/login'' y ``/signup''. Hay dos funciones, una para gestionar el inicio de sesión y otra para el registro. Ambas funciones usan los métodos \textit{GET} y \textit{POST} porque necesitan enviar datos a la página web y recibirlos también. En estas funciones, además, será donde se invoque a las clases que se crearon anteriormente de los formularios, creando una instancia de las mismas.
 
 
-Para iniciar sesión en la aplicación (ver Figura \ref{fig:funcionalidadlogin}), tanto terapeutas como pacientes deben introducir los campos email y contraseña que se hayan usado en el registro. Si existe en la base de datos un usuario cuyo email coincide con el introducido y, además, la contraseña es correcta se dará acceso al usuario al resto de funcionalidades y se le redirigirá de nuevo a la página principal pero ya identificado.En el caso de que el email no exista o la contraseña sea incorrecta se mostrará el siguiente error: ``Error al iniciar sesión'', y se pedirán los datos de nuevo.
+Para iniciar sesión en la aplicación (ver Figura \ref{fig:funcionalidadlogin}), tanto terapeutas como pacientes deben introducir los campos email y contraseña que se hayan usado en el registro. Si existe en la base de datos un usuario cuyo email coincide con el introducido y, además, la contraseña es correcta se dará acceso al usuario al resto de funcionalidades y se le redirigirá de nuevo a la página principal pero ya identificado. En el caso de que el email no exista o la contraseña sea incorrecta se mostrará el siguiente error: ``Error al iniciar sesión'', y se pedirán los datos de nuevo.
 
 \begin{figure}[h]
 	\centering
@@ -214,7 +214,7 @@ En primer lugar, el bot saluda al usuario, le da la bienvenida y explica que com
 
 \begin{figure}[h]
 	\centering
-	\includegraphics[scale=0.7]{Imagenes/Vectorial/funcionalidad_chatbot1}
+	\includegraphics[scale=0.8]{Imagenes/Vectorial/funcionalidad_chatbot1}
 	\caption{Funcionalidad chatbot}
 	\label{fig:funcionalidadchatbot}
 \end{figure}
@@ -243,7 +243,7 @@ Los usuarios pacientes podrán acceder a un menú concreto pensado para que pued
 
 \subsection{Funcionalidad consulta de pacientes registrados por parte del terapeuta}
 
-Un terapeuta debe tener la posibilidad de ver una lista de pacientes que estén a su cargo y a los que trata en terapias. Esta funcionalidad está disponible en el apartado ``pacientes'' del menú (ver Figura \ref{fig:funcionalidadconsultadepacientes}). En esta página tendrá acceso a una tabla con todos sus pacientes que tiene dos columnas, la primera indica el nombre con el que están registrados los pacientes y, la segunda muestra el email asociado a cada uno. Si lo que quiere es obtener la información de uno de sus pacientes, es decir, los recuerdos que ha ido introduciendo el usuario y recogiendo el chatbot divididos por etapas vitales, se puede ver pulsando en la fila correspondiente, concretamente, en el enlace que hay en el nombre de esa persona. Será así redirigido a la página de historia de vida de un paciente. Encima de la tabla de pacientes, en la esquina superior derecha de la página también hay un botón que dice ``Nuevo paciente'' con el que se accede a la página de creación de un nuevo paciente. Se trata de una funcionalidad para registrar a un nuevo usuario asociado al terapeuta para que pueda tener acceso a la aplicación y por ende, al chatbot.
+Un terapeuta debe tener la posibilidad de ver una lista de pacientes que estén a su cargo y a los que trata en terapias. Esta funcionalidad (ver Figura \ref{fig:funcionalidadconsultadepacientes}) está disponible en el apartado ``pacientes'' del menú. En esta página tendrá acceso a una tabla con todos sus pacientes que tiene dos columnas, la primera indica el nombre con el que están registrados los pacientes y, la segunda muestra el email asociado a cada uno. Si lo que quiere es obtener la información de uno de sus pacientes, es decir, los recuerdos que ha ido introduciendo el usuario y recogiendo el chatbot divididos por etapas vitales, se puede ver pulsando en la fila correspondiente, concretamente, en el enlace que hay en el nombre de esa persona. Será así redirigido a la página de historia de vida de un paciente. Encima de la tabla de pacientes, en la esquina superior derecha de la página también hay un botón que dice ``Nuevo paciente'' con el que se accede a la página de creación de un nuevo paciente. Se trata de una funcionalidad para registrar a un nuevo usuario asociado al terapeuta para que pueda tener acceso a la aplicación y por ende, al chatbot.
 
 \begin{figure}[h]
 	\centering
