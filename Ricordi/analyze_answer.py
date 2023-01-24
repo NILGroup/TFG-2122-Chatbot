@@ -25,16 +25,16 @@ train =memories['tuples'].tolist()
 print(train[:10])
 
 
-# Calling the load_data() function
+
 (train_texts, train_cats), (dev_texts, dev_cats) = funciones.load_data(train, limit=23486)
 
-# Processing the final format of training data
+
 train_data = list(zip(train_texts,[{'cats': cats} for cats in train_cats]))
 print(train_data[:10])
 
-# Disabling other components
+
 other_pipes = [pipe for pipe in nlp.pipe_names if pipe != 'textcat']
-with nlp.disable_pipes(*other_pipes): # only train textcat
+with nlp.disable_pipes(*other_pipes): 
     optimizer = nlp.begin_training()
 
     print("Training the model...")
@@ -44,25 +44,25 @@ with nlp.disable_pipes(*other_pipes): # only train textcat
     # Performing training
     for i in range(8):
         losses = {}
-        batches = minibatch(train_data, size=compounding(4., 32., 1.001))
+        batches = minibatch(train_data, compounding(4., 32., 1.001))
+        num = 0
         for batch in batches:
             texts, annotations = zip(*batch)
             example = []
-            # Update the model with iterating each text
+
             for i in range(len(texts)):
                 doc = nlp.make_doc(texts[i])
                 example.append(Example.from_dict(doc, annotations[i]))
 
-            #losses = textcat.rehearse(example, sgd=optimizer)
+            
             nlp.update(example, sgd=optimizer, drop=0.2, losses=losses)
+            num += 1
 
-        # Calling the evaluate() function and printing the scores
-
+        print(num)
         with nlp.use_params(optimizer.averages):
             scores = funciones.evaluate(nlp.tokenizer, textcat, dev_texts, dev_cats)
-        print('{0:.3f}\t{1:.3f}\t{2:.3f}\t{3:.3f}'
-        .format(losses['textcat'], scores['textcat_p'],
-        scores['textcat_r'], scores['textcat_f']))
+        
+        print('{0:.3f}\t{1:.3f}\t{2:.3f}\t{3:.3f}'.format(losses['textcat'], scores['textcat_p'], scores['textcat_r'], scores['textcat_f']))
         print('{0:.3f}\t'.format(losses['textcat']))
 
 def clasificar_emocion(text):
@@ -88,12 +88,12 @@ def clasificar_emocion(text):
     return categories
 
 clasificar_emocion("Mi abuela se murio en 1998")
-'''clasificar_emocion("Mi mejor recuerdo es el del nacimiento de mi hijo")
+clasificar_emocion("Mi mejor recuerdo es el del nacimiento de mi hijo")
 clasificar_emocion("Tengo 23 años")
 clasificar_emocion("Me dolió muchísimo cuando me rompí una pierna")
 clasificar_emocion("Mi hermano y yo nos pasabamos las tardes haciendo puzzles")
 clasificar_emocion("Durante la infancia estuvimos viviendo en Moratalaz")
-clasificar_emocion("Mi pareja sufrió depresión después del parto")'''
+clasificar_emocion("Mi pareja sufrió depresión después del parto")
 
 '''ValueError: [E895] The 'textcat' component received gold-standard annotations with multiple 
 labels per document. In spaCy 3 you should use the 'textcat_multilabel' component for this instead. 
