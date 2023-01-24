@@ -1,0 +1,255 @@
+[{
+  "_id": {
+    "$oid": "628e373b0e1a7168c6412b7d"
+  },
+  "pregunta": "¿En qué hospital naciste?",
+  "etiquetas": [
+    "general",
+    "infancia",
+    "nacimiento",
+    "familia"
+  ]
+},{
+  "_id": {
+    "$oid": "628e37670e1a7168c6412b7e"
+  },
+  "pregunta": "¿Cuántos años tienes?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "628e379e0e1a7168c6412b83"
+  },
+  "pregunta": "¿Cuál es tu sexo?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "628e37ba0e1a7168c6412b84"
+  },
+  "pregunta": "¿Cuál ha sido el momento más feliz de tu vida?",
+  "pregunta2": "¿Podrías describirlo con más detalle?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "628e38de0e1a7168c6412b85"
+  },
+  "pregunta": "¿Dónde naciste?",
+  "pegunta2": "¿Cómo era este lugar cuando eras pequeño?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c2d"
+  },
+  "pregunta": "¿Quiénes son las personas más importantes de tu vida?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c2e"
+  },
+  "pregunta": "¿Cúal ha sido el momento más feliz de tu vida?",
+  "pregunta2": "¿Por qué fue tan feliz?",
+  "pregunta3": "¿Dónde fue ese momento tan feliz?",
+  "pregunta4": "¿Quiénes estaban en ese momento tan feliz?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c2f"
+  },
+  "pregunta": "¿Recuerdas otro momento feliz?",
+  "pregunta2": "¿Por qué fue feliz?",
+  "pregunta3": "¿Dónde fue ese momento feliz?",
+  "pregunta4": "¿Quiénes estaban en ese momento feliz?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c30"
+  },
+  "pregunta": "¿Recuerdas un momento en que te sentiste orgulloso?",
+  "pregunta2": "¿Por qué te sentiste orgulloso?",
+  "pregunta3": "¿Dónde fue ese momento de orgullo?",
+  "pregunta4": "¿Quiénes estaban en esa ocasion tan especial de orgullo?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c31"
+  },
+  "pregunta": "¿Recuerdas mas momentos felices?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c32"
+  },
+  "pregunta": "¿A quién le esta agradecido eternamente?",
+  "pregunta2": "¿Por qué le estás agradecido?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c33"
+  },
+  "pregunta": "¿Hay algún momento que te gustaría volver a vivir?",
+  "pregunta2": "¿Por qué te gustaría volver a vivir ese momento?",
+  "pregunta3": "¿Dónde fue ese momento que te gustaría volver a vivir?",
+  "clasificación": "general"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c35"
+  },
+  "pregunta": "¿Dónde viviste cuando eras pequeño?",
+  "pregunta2": "¿Cómo era ese lugar cuando eras pequeño?",
+  "pregunta3": "¿Ha cambiado mucho ese lugar?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c36"
+  },
+  "pregunta": "¿Has vivido en algún lugar diferente cuando eras pequeño?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c37"
+  },
+  "pregunta": "¿Cómo se llaman tus padres?",
+  "pregunta2": "¿De dónde eran tus padres?",
+  "pregunta3": "¿En que trabajaban tus padres?",
+  "pregunta4": "¿Qué te gusta de tus padres?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c38"
+  },
+  "pregunta": "¿Si tienes hermanos, Cómo se llaman?",
+  "pregunta2": "¿Quién es el mayor y quién es el menor de los hermanos?",
+  "pregunta3": "¿A que jugabas con tus hermanos?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c39"
+  },
+  "pregunta": "¿Cómo era la casa dónde viviste de pequeño?",
+  "pregunta2": "¿Era grande o pequeña esa casa?",
+  "pregunta3": "¿Tenía baño la casa?",
+  "pregunta4": "¿Tenías habitación propia o dormías con otra persona?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3a"
+  },
+  "pregunta": "¿Has vivido en otra casa cuando eras pequeño? Cuéntame tambien como era",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3b"
+  },
+  "pregunta": "¿Quiénes eran tus amigos cuando eras pequeño?",
+  "pregunta2": "¿Cúal eran tu amigo favorito cuando eras pequeño?",
+  "pregunta3": "¿A qué jugabas con tus amigos cuando eras pequeño?",
+  "pregunta4": "¿Dónde jugabas con tus amigos cuando eras pequeño?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3c"
+  },
+  "pregunta": "¿Hacías deporte cuando eras pequeño?",
+  "pregunta2": "¿Que deportes hacías cuando eras pequeño?",
+  "pregunta3": "¿En dónde hacías deporte?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3d"
+  },
+  "pregunta": "¿A qué colegio ibas cuando eras pequeño?",
+  "pregunta2": "¿Te gustaba ir al colegio?",
+  "pregunta3": "¿Dónde está ese colegio?",
+  "pregunta4": "¿Quiénes eran tus amigos del colegio?. Puedes nombrarlos por sus apodos",
+  "pregunta5": "¿Cúal eran tu mejor amigo del colegio?",
+  "pregunta6": "¿A que jugabas en el colegio?",
+  "pregunta7": "¿Te acuerdas de alguna anécdota del colegio?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3e"
+  },
+  "pregunta": "¿Ibas a algun sitio a veranear cuando eras pequeño?",
+  "pregunta2": "¿a qué sitios ibas a veranear de pequeño?",
+  "pregunta3": "¿Qué hacías durante los veranos cuando eras pequeño?",
+  "pregunta4": "¿Quiénes eran tus amigos del verano?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c3f"
+  },
+  "pregunta": "¿Que juguetes tenías cuando eras pequeño?",
+  "pregunta2": "¿Te inventaste algún juego cuando eras pequeño?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c40"
+  },
+  "pregunta": "¿Tienes algún recuerdo especial de cuando eras pequeño?",
+  "pregunta2": "¿Dónde fue ese recuerdo tan especial de cuando eras pequeño?",
+  "pregunta3": "¿Quién estaba en ese recuerdo tan especial de cuando eras pequeño?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c41"
+  },
+  "pregunta": "Coge alguna foto antigua. ¿Que hacías en la foto?",
+  "pregunta2": "¿Con quién estabas en la foto?",
+  "pregunta3": "¿Donde te sacaron esa foto?",
+  "pregunta4": "¿Por que es importante esa foto?",
+  "clasificación": "infancia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c42"
+  },
+  "pregunta": "A qué te dedicabas en la adolescencia, estudiabas o trabajabas?",
+  "pregunta2": "¿Qué estudiabas o trabajabas durante la adolescencia?",
+  "pregunta3": "¿Te gustaban los estudios o el trabajo durante la adolescencia, por qué?",
+  "pregunta4": "¿Si has estudiado, Cuándo terminaste los estudios en tu época de adolescente?",
+  "pregunta5": "¿Si has estudiado en tu epoca de adolescente, seguiste estudiando una carrera o formación profesional?",
+  "pregunta6": "¿Después de tus estudios, en qué has trabajado o a qué te has dedicado?",
+  "pregunta7": "¿Recuerdas alguna anécdota especial durante la época de estudio o trabajo en tu adolescencia?",
+  "clasificación": "adolescencia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c44"
+  },
+  "pregunta": "¿Te gustó tu etapa de adolescente?",
+  "pregunta2": "¿Qué te gusto en tu etapa de adolescente?",
+  "clasificación": "adolescencia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c45"
+  },
+  "pregunta": "¿Que hacías los fines de semana durante tu adolescencia?",
+  "pregunta2": "¿Con quién salías los fines de semana en la adolescencia?",
+  "pregunta3": "¿Quién o quiénes eran tus mejores amigos en la adolescencia?",
+  "pregunta4": "¿Cada cuánto te veías con tus amigos la adolescencia?",
+  "pregunta5": "¿Tuviste pareja o parejas durante la adolescencia o algún amor platónico?",
+  "pregunta6": "¿Quién o quiénes fueron tus parejas o amores platónicos?",
+  "pregunta7": "¿Cuáles eran tus actividades favoritas los fines de semana durante la adolescencia?",
+  "pregunta8": "¿Te obligaban a llegar a una hora a casa en la adolescencia?",
+  "clasificación": "adolescencia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c46"
+  },
+  "pregunta": "Que aficciones tenías en tu época de adolescente?",
+  "pregunta2": "¿Cuándo eras adolescente te gustaba leer?",
+  "pregunta3": "¿Qué libros leíste cuando eras adolescente que te hayan gustado mucho y por qué?",
+  "pregunta4": "¿Te gustaba escuchar música cuando eras adolescente?",
+  "pregunta5": "¿Qué música oías cuando eras adolescente?",
+  "pregunta6": "¿Cúal era tu cantante favorito cuando eras adolescente?",
+  "pregunta7": "¿Te gustaba la moda cuando eras adolescente?",
+  "pregunta8": "¿Cómo vestías cuando eras adolescente?",
+  "pregunta9": "¿Te gustaba bailar cuando eras adolescente?",
+  "pregunta10": "¿Que te gustaba bailar cuando eras adolescente?",
+  "pregunta11": "¿Dónde bailabas cuando eras adolescente?",
+  "clasificación": "adolescencia"
+},{
+  "_id": {
+    "$oid": "629518e20e1a7168c6412c47"
+  },
+  "pregunta": "¿Cómo te movías en la adolescencia, en bici, moto, andando?",
+  "pregunta2": "¿A qué lugares te gustaba ir en la adolescencia?",
+  "clasificación": "adolescencia"
+}]
